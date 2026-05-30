@@ -1,7 +1,7 @@
 package com.oasis_hotel.oasis_hotel.dto.hotel;
 
-import com.oasis_hotel.oasis_hotel.repository.HotelRepository;
-
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -18,10 +18,9 @@ public record HotelRequestDTO(
     @Size(min=3, max=30, message="city mast be between 3 and 30 characters")
     String city,
 
-
-    Integer Stars,
-
-    HotelRepository status
+    @Min(value = 1, message = "Stars must be at least 1")
+    @Max(value = 5, message = "Stars cannot be more than 5")
+    Integer stars
 
 ) {
     
