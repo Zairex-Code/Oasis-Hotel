@@ -5,8 +5,12 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.oasis_hotel.oasis_hotel.entity.status.HotelStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,8 +47,9 @@ public class Hotel {
     @Column(name="stars_rating")
     private Integer stars;
 
-    @Column(name="is_active")
-    private Boolean isActive;
+    @Enumerated(EnumType.STRING)
+    @Column(name="status", nullable=false)
+    private HotelStatus status;
 
     @Column(name="created_at")
     @CreationTimestamp
