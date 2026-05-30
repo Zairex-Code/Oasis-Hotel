@@ -1,0 +1,16 @@
+version: '3,8'
+
+services:
+  oasis-db:
+    image: mysql:8.0
+    container_name: oasis_mysql_server
+    restart: always
+    environment:
+      MYSQL_DATABASE: oasis_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    volumes:
+      - oasis_mysql_data:/var/lib/mysql
+volumes:
+  oasis_mysql_data:
