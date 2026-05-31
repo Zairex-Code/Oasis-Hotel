@@ -52,11 +52,11 @@ public class Hotel {
     @Column(name="status", nullable=false)
     private HotelStatus status = HotelStatus.ACTIVE;
 
-    @Column(name="created_at")
+    @Column(name="created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at" ,nullable=false)
+    @Column(name="updated_at")
     @UpdateTimestamp
     private  LocalDateTime updatedAt;
 
