@@ -47,9 +47,10 @@ public class Hotel {
     @Column(name="stars_rating")
     private Integer stars;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name="status", nullable=false)
-    private HotelStatus status;
+    private HotelStatus status = HotelStatus.ACTIVE;
 
     @Column(name="created_at")
     @CreationTimestamp
