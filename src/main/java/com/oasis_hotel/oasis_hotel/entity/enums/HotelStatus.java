@@ -1,4 +1,4 @@
-package com.oasis_hotel.oasis_hotel.entity.status;
+package com.oasis_hotel.oasis_hotel.entity.enums;
 
 public enum HotelStatus {
     ACTIVE,

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.oasis_hotel.oasis_hotel.entity.status.HotelStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.HotelStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
