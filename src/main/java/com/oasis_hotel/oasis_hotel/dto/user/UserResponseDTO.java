@@ -2,7 +2,9 @@ package com.oasis_hotel.oasis_hotel.dto.user;
 
 import java.time.LocalDateTime;
 
-import org.springframework.context.annotation.Role;
+import com.oasis_hotel.oasis_hotel.entity.enums.Role;
+
+
 
 public record UserResponseDTO(
     Long id,
