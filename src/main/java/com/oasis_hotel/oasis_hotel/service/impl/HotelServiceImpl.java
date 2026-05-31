@@ -16,8 +16,8 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class HotelServiceImpl implements HotelService{
-    private HotelRepository hotelRepository;
-    private HotelMapper hotelMapper;
+    private final HotelRepository hotelRepository;
+    private final HotelMapper hotelMapper;
 
     public HotelServiceImpl(HotelRepository hotelRepository , HotelMapper hotelMapper) {
         this.hotelRepository = hotelRepository;
@@ -30,7 +30,7 @@ public class HotelServiceImpl implements HotelService{
     public HotelResponseDTO createHotel(HotelRequestDTO request){
         Hotel hotelToSave = hotelMapper.toEntity(request);
         Hotel hotelSaved = hotelRepository.save(hotelToSave);
-        return 
+        return hotelMapper.toResponse(hotelSaved);
 
 
         
