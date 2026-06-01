@@ -1,5 +1,8 @@
 package com.oasis_hotel.oasis_hotel.service.impl;
 
+import com.oasis_hotel.oasis_hotel.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.room.RoomRequestDTO;
@@ -21,9 +24,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService{
+    private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final HotelRepository hotelRepository; 
     private final RoomMapper roomMapper;
+    
     @Override
     public RoomResponseDTO createRoom(RoomRequestDTO dto) {
         Hotel hotel = hotelRepository.findById(dto.hotelId())
@@ -36,6 +41,10 @@ public class RoomServiceImpl implements RoomService{
 
 
         
+    }
+    @Override
+    public Page<RoomResponseDTO> getAllRooms(Pageable pageable) {
+        return roomRepository.findAll(pageable).map(roomMapper::toResponse);
     }
 
 

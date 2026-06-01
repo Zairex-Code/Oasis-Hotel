@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> getMethodName(@PageableDefault Pageable pageable) {
         Page<UserResponseDTO> response = userService.getAllUsers(pageable);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok(response);
     }
     
 
