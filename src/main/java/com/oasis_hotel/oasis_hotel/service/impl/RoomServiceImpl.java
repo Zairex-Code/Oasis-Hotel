@@ -46,6 +46,11 @@ public class RoomServiceImpl implements RoomService{
     public Page<RoomResponseDTO> getAllRooms(Pageable pageable) {
         return roomRepository.findAll(pageable).map(roomMapper::toResponse);
     }
+    @Override
+    public RoomResponseDTO getRoomById(Long id) {
+        Room room =roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id: " + id));
+        return roomMapper.toResponse(room);
+    }
 
 
     

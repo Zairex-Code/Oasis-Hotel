@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -33,6 +34,13 @@ public class RoomController {
         Page<RoomResponseDTO> response = roomService.getAllRooms(pageable);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RoomResponseDTO> getRoomById(@PathVariable Long id) {
+        RoomResponseDTO response = roomService.getRoomById(id);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
     @PostMapping()
