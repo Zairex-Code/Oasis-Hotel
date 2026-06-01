@@ -1,5 +1,8 @@
 package com.oasis_hotel.oasis_hotel.service.impl;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
@@ -39,8 +42,12 @@ public class HotelServiceImpl implements HotelService{
 
 
     @Override
-    public HotelResponseDTO getAllHotels() {
+    public Page<HotelResponseDTO> getAllHotels(Pageable pageable) {
+        return hotelRepository.findAll(pageable)
+                        .map(hotelMapper::toResponse);
         
     }
+
+
 
 }
