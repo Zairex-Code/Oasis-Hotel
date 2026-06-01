@@ -36,4 +36,11 @@ public class HotelServiceImpl implements HotelService{
         
     }
 
+
+
+    @Override
+    public HotelResponseDTO getAllHotels() {
+        
+    }
+
 }
