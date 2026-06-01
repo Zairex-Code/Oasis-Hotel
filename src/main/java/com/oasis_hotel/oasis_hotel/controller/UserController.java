@@ -19,6 +19,7 @@ import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -34,6 +35,13 @@ public class UserController {
         Page<UserResponseDTO> response = userService.getAllUsers(pageable);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        UserResponseDTO response = userService.getUserById(id);
+        return ResponseEntity.ok(response);
+    }
+    
     
 
     @PostMapping

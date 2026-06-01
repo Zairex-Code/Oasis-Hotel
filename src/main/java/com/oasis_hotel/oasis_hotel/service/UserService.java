@@ -9,5 +9,6 @@ import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
 public interface UserService  {
     UserResponseDTO createUser(UserRequestDTO dto);
     Page<UserResponseDTO> getAllUsers(Pageable pageable);
+    UserResponseDTO getUserById(Long id);
     
 }

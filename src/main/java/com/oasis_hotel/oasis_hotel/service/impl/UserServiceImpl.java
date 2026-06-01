@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
 import com.oasis_hotel.oasis_hotel.entity.User;
+import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.UserMapper;
 import com.oasis_hotel.oasis_hotel.repository.UserRepository;
 import com.oasis_hotel.oasis_hotel.service.UserService;
@@ -33,5 +34,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(userMapper::toResponse);
+    }
+
+    @Override
+    public UserResponseDTO getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User Not found with id: " + id));
+        return userMapper.toResponse(user);
     }
 }
