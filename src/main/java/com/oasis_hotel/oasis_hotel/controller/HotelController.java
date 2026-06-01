@@ -18,6 +18,9 @@ import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -37,6 +40,13 @@ public class HotelController {
         return ResponseEntity.ok(response);
         
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HotelResponseDTO> getHotelById(@PathVariable Long id) {
+        HotelResponseDTO response = hotelService.getHotelById(id);
+        return ResponseEntity.ok(response);
+    }
+    
     
 
     @PostMapping

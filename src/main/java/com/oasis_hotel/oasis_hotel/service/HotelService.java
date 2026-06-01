@@ -11,5 +11,7 @@ import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
 public interface HotelService{
     HotelResponseDTO createHotel(HotelRequestDTO dto);
     Page<HotelResponseDTO> getAllHotels(Pageable pageable);
+    HotelResponseDTO getHotelById(Long id);
+    
 
 }

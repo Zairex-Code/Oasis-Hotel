@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
+import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.HotelMapper;
 import com.oasis_hotel.oasis_hotel.repository.HotelRepository;
 import com.oasis_hotel.oasis_hotel.service.HotelService;
@@ -45,6 +46,15 @@ public class HotelServiceImpl implements HotelService{
         return hotelRepository
                                 .findAll(pageable)
                                 .map(hotelMapper::toResponse);
+    }
+
+
+
+    @Override
+    public HotelResponseDTO getHotelById(Long id) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Hotel not found with id: "+id));
+        return hotelMapper.toResponse(hotel);
+
     }
 
 
