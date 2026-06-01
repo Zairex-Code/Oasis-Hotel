@@ -40,7 +40,6 @@ public class HotelServiceImpl implements HotelService{
     }
 
 
-
     @Override
     public Page<HotelResponseDTO> getAllHotels(Pageable pageable) {
         return hotelRepository
