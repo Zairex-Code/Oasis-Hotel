@@ -4,5 +4,6 @@ public enum RoomType {
     SINGLE,
     DOUBLE,
     MATRIMONIAL,
-    SUITE
+    SUITE,
+    PRESIDENTIAL
 }
