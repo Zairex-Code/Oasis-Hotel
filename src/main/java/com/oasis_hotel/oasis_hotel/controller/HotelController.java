@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
@@ -49,8 +50,9 @@ public class HotelController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("name/{name}")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelByName(@PathVariable String name, @PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+    @GetMapping("/search")
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelsByName(@RequestParam String name,@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+        
         Page<HotelResponseDTO> response = hotelService.getHotelByName(name, pageable);
         return ResponseEntity.ok(response);
     }
