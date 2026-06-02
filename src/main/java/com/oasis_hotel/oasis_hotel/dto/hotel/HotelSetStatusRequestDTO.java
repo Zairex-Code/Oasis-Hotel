@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record HotelSetStatusRequestDTO(
     @NotNull(message="Status is mandatory")
-    HotelStatus hotelStatus
+    HotelStatus status
 ) {
     
 }

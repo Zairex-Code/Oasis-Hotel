@@ -82,7 +82,7 @@ public class HotelServiceImpl implements HotelService{
     public HotelResponseDTO setHotelStatus(Long id, HotelSetStatusRequestDTO request) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("hotel not found with id: " + id));
 
-        hotel.setStatus(request.hotelStatus());
+        hotel.setStatus(request.status());
 
         Hotel hotelUpdated = hotelRepository.save(hotel);
 
