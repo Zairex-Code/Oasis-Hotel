@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.User;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
@@ -50,7 +51,19 @@ public class UserServiceImpl implements UserService{
         user.setLastName(request.lastName());
         user.setEmail(request.email());
         
+        User userUpdated = userRepository.save(user);
         
-        return userMapper.toResponse(user);
+        return userMapper.toResponse(userUpdated);
+    }
+
+    @Override
+    public UserResponseDTO setUSerPassword(Long id, UserSetPasswordRequestDTO request) {
+        User user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found with id : " + id));
+
+        user.setPassword(request.password());
+
+        User userPasswordUpdated = userRepository.save(user);
+        
+        return userMapper.toResponse(userPasswordUpdated);
     }
 }

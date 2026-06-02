@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 
 public interface UserService  {
@@ -12,5 +13,6 @@ public interface UserService  {
     Page<UserResponseDTO> getAllUsers(Pageable pageable);
     UserResponseDTO getUserById(Long id);
     UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request);
+    UserResponseDTO setUSerPassword(Long id, UserSetPasswordRequestDTO request);
     
 }
