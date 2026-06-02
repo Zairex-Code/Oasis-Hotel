@@ -55,9 +55,15 @@ public class HotelServiceImpl implements HotelService{
     public HotelResponseDTO getHotelById(Long id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Hotel not found with id: "+id));
         return hotelMapper.toResponse(hotel);
-
+        
     }
-
+    
+    
+        @Override
+        public HotelResponseDTO getHotelByName(String name) {
+            Hotel hotel = hotelRepository.findByName(name).orElseThrow(()-> new ResourceNotFoundException("Hotel not found with name: "+ name));
+            
+        }
 
 
     @Override
@@ -88,6 +94,8 @@ public class HotelServiceImpl implements HotelService{
 
         return hotelMapper.toResponse(hotelUpdated);
     }
+
+
 
 
 
