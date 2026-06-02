@@ -25,6 +25,8 @@ import jakarta.validation.Valid;
 
 
 
+
+
 @RestController
 @RequestMapping("/v1/api/hotels")
 public class HotelController {
@@ -46,6 +48,13 @@ public class HotelController {
         HotelResponseDTO response = hotelService.getHotelById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("name/{name}")
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByName(@PathVariable String name, @PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+        Page<HotelResponseDTO> response = hotelService.getHotelByName(name, pageable);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
 

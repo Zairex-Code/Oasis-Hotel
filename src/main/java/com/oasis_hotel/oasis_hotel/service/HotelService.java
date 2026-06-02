@@ -13,7 +13,7 @@ public interface HotelService{
     HotelResponseDTO createHotel(HotelRequestDTO dto);
     Page<HotelResponseDTO> getAllHotels(Pageable pageable);
     HotelResponseDTO getHotelById(Long id);
-    HotelResponseDTO getHotelByName(String name);
+    Page<HotelResponseDTO> getHotelByName(String name, Pageable pageable);
     HotelResponseDTO updateHotel(Long id, HotelRequestDTO request);
     HotelResponseDTO setHotelStatus(Long id, HotelSetStatusRequestDTO request);
     

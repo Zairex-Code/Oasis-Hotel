@@ -59,11 +59,18 @@ public class HotelServiceImpl implements HotelService{
     }
     
     
-        @Override
-        public HotelResponseDTO getHotelByName(String name) {
-            Hotel hotel = hotelRepository.findByName(name).orElseThrow(()-> new ResourceNotFoundException("Hotel not found with name: "+ name));
-            
+    @Override
+    public Page<HotelResponseDTO> getHotelByName(String name, Pageable pageable) {
+
+        Page<Hotel> hotel = hotelRepository.findByNameContainingIgnoreCase(name, pageable); 
+
+        if(hotel.isEmpty()){
+            throw new  ResourceNotFoundException("Hotel not found with name: " + name);
         }
+
+        return  hotel.map(hotelMapper::toResponse);
+        
+    }
 
 
     @Override
