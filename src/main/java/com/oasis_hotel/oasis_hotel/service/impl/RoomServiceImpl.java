@@ -51,6 +51,12 @@ public class RoomServiceImpl implements RoomService{
         Room room =roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id: " + id));
         return roomMapper.toResponse(room);
     }
+    @Override
+    public RoomResponseDTO updateRoom(Long id, RoomRequestDTO request) {
+        Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id: " + id));
+        room.set
+        return roomMapper.toResponse(room);
+    }
 
 
     
