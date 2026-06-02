@@ -10,5 +10,6 @@ public interface UserService  {
     UserResponseDTO createUser(UserRequestDTO dto);
     Page<UserResponseDTO> getAllUsers(Pageable pageable);
     UserResponseDTO getUserById(Long id);
+    UserResponseDTO updateUser(Long id, UserRequestDTO request);
     
 }
