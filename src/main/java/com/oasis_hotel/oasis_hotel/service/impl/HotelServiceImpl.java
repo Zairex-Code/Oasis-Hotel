@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.HotelMapper;
@@ -73,6 +74,19 @@ public class HotelServiceImpl implements HotelService{
         Hotel updatedHotel = hotelRepository.save(hotel);
         
         return  hotelMapper.toResponse(updatedHotel);
+    }
+
+
+
+    @Override
+    public HotelResponseDTO setHotelStatus(Long id, HotelSetStatusRequestDTO request) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("hotel not found with id: " + id));
+
+        hotel.setStatus(request.hotelStatus());
+
+        Hotel hotelUpdated = hotelRepository.save(hotel);
+
+        return hotelMapper.toResponse(hotelUpdated);
     }
 
 

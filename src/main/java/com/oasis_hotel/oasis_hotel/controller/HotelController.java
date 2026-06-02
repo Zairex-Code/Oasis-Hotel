@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.service.HotelService;
 
 import jakarta.validation.Valid;
@@ -59,6 +60,14 @@ public class HotelController {
         HotelResponseDTO hotelUpdated = hotelService.updateHotel(id, request);
         
         return ResponseEntity.ok(hotelUpdated);
+    }
+
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<HotelResponseDTO> setHotelStatus(@PathVariable Long id,@Valid @RequestBody  HotelSetStatusRequestDTO request) {
+        HotelResponseDTO response = hotelService.setHotelStatus(id, request);
+        
+        return ResponseEntity.ok(response);
     }
     
 }
