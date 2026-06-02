@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.room.RoomRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.room.RoomResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.room.RoomUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
 import com.oasis_hotel.oasis_hotel.entity.Room;
 import com.oasis_hotel.oasis_hotel.entity.enums.RoomStatus;
@@ -52,10 +53,16 @@ public class RoomServiceImpl implements RoomService{
         return roomMapper.toResponse(room);
     }
     @Override
-    public RoomResponseDTO updateRoom(Long id, RoomRequestDTO request) {
+    public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
         Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id: " + id));
-        room.set
-        return roomMapper.toResponse(room);
+        room.setRoomNumber(request.roomNumber());
+        room.setCapacity(request.capacity());
+        room.setPricePerNight(request.pricePerNight());
+        room.setRoomType(request.roomType());
+        room.setRoomStatus(request.roomStatus());
+
+        Room roomUpdated = roomRepository.save(room);
+        return roomMapper.toResponse(roomUpdated);
     }
 
 

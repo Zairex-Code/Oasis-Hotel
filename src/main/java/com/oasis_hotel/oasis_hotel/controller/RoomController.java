@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.room.RoomRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.room.RoomResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.room.RoomUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.service.RoomService;
 
 import jakarta.validation.Valid;
@@ -51,11 +52,10 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id,@Valid @RequestBody RoomRequestDTO request) {
-        RoomResponseDTO roomToUpdate = roomService.updateRoom(id, request);
-        
-        
-        return entity;
+    public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id,@Valid @RequestBody RoomUpdateRequestDTO request) {
+        RoomResponseDTO response = roomService.updateRoom(id, request);
+
+        return ResponseEntity.ok(response);
     }
     
 }
