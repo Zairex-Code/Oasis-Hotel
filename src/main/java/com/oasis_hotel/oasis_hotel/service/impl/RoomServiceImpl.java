@@ -54,7 +54,7 @@ public class RoomServiceImpl implements RoomService{
     }
     @Override
     public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
-        Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id: " + id));
+        Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id : " + id));
         room.setRoomNumber(request.roomNumber());
         room.setCapacity(request.capacity());
         room.setPricePerNight(request.pricePerNight());
