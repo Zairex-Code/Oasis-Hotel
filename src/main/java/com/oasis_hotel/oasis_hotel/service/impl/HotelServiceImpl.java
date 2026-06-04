@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.HotelMapper;
@@ -54,9 +55,22 @@ public class HotelServiceImpl implements HotelService{
     public HotelResponseDTO getHotelById(Long id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Hotel not found with id: "+id));
         return hotelMapper.toResponse(hotel);
-
+        
     }
+    
+    
+    @Override
+    public Page<HotelResponseDTO> getHotelByName(String name, Pageable pageable) {
 
+        Page<Hotel> hotel = hotelRepository.findByNameContainingIgnoreCase(name, pageable); 
+
+        if(hotel.isEmpty()){
+            throw new  ResourceNotFoundException("Hotel not found with name: " + name);
+        }
+
+        return  hotel.map(hotelMapper::toResponse);
+        
+    }
 
 
     @Override
@@ -74,6 +88,21 @@ public class HotelServiceImpl implements HotelService{
         
         return  hotelMapper.toResponse(updatedHotel);
     }
+
+
+
+    @Override
+    public HotelResponseDTO setHotelStatus(Long id, HotelSetStatusRequestDTO request) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("hotel not found with id: " + id));
+
+        hotel.setStatus(request.status());
+
+        Hotel hotelUpdated = hotelRepository.save(hotel);
+
+        return hotelMapper.toResponse(hotelUpdated);
+    }
+
+
 
 
 

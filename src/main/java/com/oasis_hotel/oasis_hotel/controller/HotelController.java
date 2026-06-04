@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.service.HotelService;
 
 import jakarta.validation.Valid;
+
+
 
 
 
@@ -45,6 +49,14 @@ public class HotelController {
         HotelResponseDTO response = hotelService.getHotelById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelsByName(@RequestParam String name,@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+        
+        Page<HotelResponseDTO> response = hotelService.getHotelByName(name, pageable);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
 
@@ -59,6 +71,14 @@ public class HotelController {
         HotelResponseDTO hotelUpdated = hotelService.updateHotel(id, request);
         
         return ResponseEntity.ok(hotelUpdated);
+    }
+
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<HotelResponseDTO> setHotelStatus(@PathVariable Long id,@Valid @RequestBody  HotelSetStatusRequestDTO request) {
+        HotelResponseDTO response = hotelService.setHotelStatus(id, request);
+        
+        return ResponseEntity.ok(response);
     }
     
 }

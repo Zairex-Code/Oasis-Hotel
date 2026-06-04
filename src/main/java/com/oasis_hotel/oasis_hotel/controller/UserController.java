@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.service.UserService;
 
@@ -57,6 +58,14 @@ public class UserController {
         UserResponseDTO userUpdated = userService.updateUser(id, request);
 
         return ResponseEntity.ok(userUpdated);
+    }
+
+    @PutMapping("/password/{id}")
+    public ResponseEntity<UserResponseDTO> setUserPassword(@PathVariable Long id,@Valid @RequestBody  UserSetPasswordRequestDTO request) {
+        UserResponseDTO userPasswordUpdated = userService.setUSerPassword(id, request);
+
+        return ResponseEntity.ok(userPasswordUpdated);
+        
     }
     
 
