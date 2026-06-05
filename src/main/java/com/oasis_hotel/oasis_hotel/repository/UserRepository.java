@@ -10,7 +10,7 @@ import com.oasis_hotel.oasis_hotel.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
-    @Query("SELECT u FROM Users u WHERE LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%' , :name , '%'))")
+    @Query("SELECT u FROM User u WHERE LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%' , :name , '%'))")
     Page<User> findByFullNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
     
 }
