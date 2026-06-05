@@ -92,7 +92,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public Page<UserResponseDTO> getUsersByRole(Role role, Pageable pageable) {
         // TODO get users by role
-        throw new UnsupportedOperationException("Unimplemented method 'getUsersByRole'");
+
+        Page<User> user = userRepository.findByRole(role, pageable);
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("Users not found with Role: " + role);
+        }
+        return user.map(userMapper::toResponse);
     }
 
 }

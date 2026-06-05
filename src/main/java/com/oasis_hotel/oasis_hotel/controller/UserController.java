@@ -1,5 +1,7 @@
 package com.oasis_hotel.oasis_hotel.controller;
 
+
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,6 +19,7 @@ import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
+import com.oasis_hotel.oasis_hotel.entity.enums.Role;
 import com.oasis_hotel.oasis_hotel.service.UserService;
 
 import jakarta.validation.Valid;
@@ -57,6 +60,13 @@ public class UserController {
         UserResponseDTO response = userService.getUserByEmail(email);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search/role")
+    public ResponseEntity<Page<UserResponseDTO>> getUserByRole(@RequestParam Role role, @PageableDefault(size = 10, page = 0,sort = "id") Pageable pageable) {
+        Page<UserResponseDTO> response = userService.getUsersByRole(role, pageable);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
     

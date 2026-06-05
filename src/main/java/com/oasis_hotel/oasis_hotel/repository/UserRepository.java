@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 
 import com.oasis_hotel.oasis_hotel.entity.User;
+import com.oasis_hotel.oasis_hotel.entity.enums.Role;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
@@ -17,5 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Page<User> findByFullNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
     Optional<User> findByEmail(String email);
+
+    Page<User> findByRole(Role role, Pageable pageable);
     
 }
