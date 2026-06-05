@@ -21,6 +21,8 @@ import com.oasis_hotel.oasis_hotel.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -32,7 +34,7 @@ public class UserController {
 
     
     @GetMapping
-    public ResponseEntity<Page<UserResponseDTO>> getMethodName(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<UserResponseDTO>> getAllUser(@PageableDefault Pageable pageable) {
         Page<UserResponseDTO> response = userService.getAllUsers(pageable);
         return ResponseEntity.ok(response);
     }
@@ -40,6 +42,13 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO response = userService.getUserById(id);
+        return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<Page<UserResponseDTO>> getUserByName(@RequestParam String name, @PageableDefault(size = 10, page = 0, sort = "name") Pageable pageable) {
+        Page<UserResponseDTO> response = userService.getUserByName(name, pageable);
+
         return ResponseEntity.ok(response);
     }
     

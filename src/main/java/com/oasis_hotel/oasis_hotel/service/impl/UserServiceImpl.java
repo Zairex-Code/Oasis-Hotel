@@ -43,6 +43,17 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User Not found with id: " + id));
         return userMapper.toResponse(user);
     }
+    @Override
+    public Page<UserResponseDTO> getUserByName(String name, Pageable pageable) {
+        Page<User> user = userRepository.findByFullNameContainingIgnoreCase(name, pageable);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("user not found with name: " + name);
+        }
+
+        return user.map(userMapper::toResponse);
+        
+
+    }
 
     @Override
     public UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request) {
@@ -66,4 +77,5 @@ public class UserServiceImpl implements UserService{
         
         return userMapper.toResponse(userPasswordUpdated);
     }
+
 }

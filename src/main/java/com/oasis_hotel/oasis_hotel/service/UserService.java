@@ -12,6 +12,7 @@ public interface UserService  {
     UserResponseDTO createUser(UserRequestDTO dto);
     Page<UserResponseDTO> getAllUsers(Pageable pageable);
     UserResponseDTO getUserById(Long id);
+    Page<UserResponseDTO> getUserByName(String name, Pageable pageable);
     
     UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request);
     UserResponseDTO setUSerPassword(Long id, UserSetPasswordRequestDTO request);
