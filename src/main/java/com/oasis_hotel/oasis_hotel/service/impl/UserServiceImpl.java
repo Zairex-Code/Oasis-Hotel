@@ -9,6 +9,7 @@ import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.User;
+import com.oasis_hotel.oasis_hotel.entity.enums.Role;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.UserMapper;
 import com.oasis_hotel.oasis_hotel.repository.UserRepository;
@@ -55,6 +56,9 @@ public class UserServiceImpl implements UserService{
 
     }
 
+
+    
+
     @Override
     public UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request) {
         User user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found with id: " + id));
@@ -76,6 +80,19 @@ public class UserServiceImpl implements UserService{
         User userPasswordUpdated = userRepository.save(user);
         
         return userMapper.toResponse(userPasswordUpdated);
+    }
+
+    @Override
+    public UserResponseDTO getUserByEmail(String email) {
+        
+        User user = userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found with email: " + email));
+        return userMapper.toResponse(user);
+    }
+
+    @Override
+    public Page<UserResponseDTO> getUsersByRole(Role role, Pageable pageable) {
+        // TODO get users by role
+        throw new UnsupportedOperationException("Unimplemented method 'getUsersByRole'");
     }
 
 }
