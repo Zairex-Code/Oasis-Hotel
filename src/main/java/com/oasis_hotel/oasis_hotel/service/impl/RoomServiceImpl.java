@@ -42,8 +42,8 @@ public class RoomServiceImpl implements RoomService{
         roomToSave.setRoomStatus(RoomStatus.AVAILABLE);
         Room savedRoom = roomRepository.save(roomToSave);
         return roomMapper.toResponse(savedRoom);
-
-
+        
+        
         
     }
     @Override
@@ -56,6 +56,18 @@ public class RoomServiceImpl implements RoomService{
         return roomMapper.toResponse(room);
     }
     @Override
+    public Page<RoomResponseDTO> getRoomByHotelId(Long hotelId, Pageable pageable) {
+        
+        Page<Room> room = roomRepository.findByHotelId(hotelId, pageable);
+        if(room.isEmpty()){
+            throw new ResourceNotFoundException("Room not found with hotel id: " +hotelId);
+        }
+        return room.map(roomMapper::toResponse);
+    }
+
+    
+
+    @Override
     public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
         Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id : " + id));
         room.setRoomNumber(request.roomNumber());
@@ -66,11 +78,6 @@ public class RoomServiceImpl implements RoomService{
 
         Room roomUpdated = roomRepository.save(room);
         return roomMapper.toResponse(roomUpdated);
-    }
-    @Override
-    public RoomResponseDTO getRoomByRoomNumber(String roomNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoomByRoomNumber'");
     }
     @Override
     public Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable) {

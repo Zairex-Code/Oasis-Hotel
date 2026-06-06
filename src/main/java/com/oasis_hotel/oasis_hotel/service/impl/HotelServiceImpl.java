@@ -121,7 +121,7 @@ public class HotelServiceImpl implements HotelService{
 
     @Override
     public Page<HotelResponseDTO> getHotelRecentlyReleased(Pageable pageable) {
-        // TODO get hotels recently added
+        
         LocalDateTime recentlyDays = LocalDateTime.now().minusDays(15);
         Page<Hotel> hotel = hotelRepository.findByCreatedAtGreaterThanEqual(recentlyDays, pageable);
 

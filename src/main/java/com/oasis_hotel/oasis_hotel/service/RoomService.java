@@ -15,7 +15,7 @@ public interface RoomService {
     RoomResponseDTO createRoom(RoomRequestDTO dto);
     Page<RoomResponseDTO> getAllRooms(Pageable pageable);
     RoomResponseDTO getRoomById(Long id);
-    RoomResponseDTO getRoomByRoomNumber(String roomNumber);
+    Page<RoomResponseDTO> getRoomByHotelId(Long hotelId, Pageable pageable);
     Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable);
     Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable);
     Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable);

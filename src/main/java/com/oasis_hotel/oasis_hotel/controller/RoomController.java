@@ -20,6 +20,8 @@ import com.oasis_hotel.oasis_hotel.service.RoomService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -42,6 +44,14 @@ public class RoomController {
         RoomResponseDTO response = roomService.getRoomById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/hotelId/{hotelId}")
+    public ResponseEntity<Page<RoomResponseDTO>> getMethodName(@PathVariable Long hotelId, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+
+        Page<RoomResponseDTO> response = roomService.getRoomByHotelId(hotelId, pageable);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
     
