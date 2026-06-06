@@ -55,7 +55,7 @@ public class RoomController {
     }
     
     @GetMapping("search/room-capacity")
-    public ResponseEntity<Page<RoomResponseDTO>> getMethodName(@RequestParam Integer capacity, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<RoomResponseDTO>> getRoomByCapacity(@RequestParam Integer capacity, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
         Page<RoomResponseDTO> response = roomService.getRoomByCapacity(capacity, pageable);
         return ResponseEntity.ok(response);
     }
