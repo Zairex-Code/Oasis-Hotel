@@ -80,6 +80,12 @@ public class HotelController {
         
     }
     
+    @GetMapping("search/stars")
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByStars(@RequestParam Integer stars, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<HotelResponseDTO> response = hotelService.getHotelByStars(stars, pageable);
+
+        return ResponseEntity.ok(response);
+    }
     
     
     
