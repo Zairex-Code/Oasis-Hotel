@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
@@ -24,7 +25,6 @@ import com.oasis_hotel.oasis_hotel.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -49,7 +49,7 @@ public class UserController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<Page<UserResponseDTO>> getUserByName(@RequestParam String name, @PageableDefault(size = 10, page = 0, sort = "name") Pageable pageable) {
+    public ResponseEntity<Page<UserResponseDTO>> getUserByName(@RequestParam String name, @PageableDefault(size = 10, page = 0, sort = "firstName") Pageable pageable) {
         Page<UserResponseDTO> response = userService.getUserByName(name, pageable);
 
         return ResponseEntity.ok(response);

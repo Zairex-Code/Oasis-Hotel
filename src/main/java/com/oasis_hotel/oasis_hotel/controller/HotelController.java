@@ -58,11 +58,19 @@ public class HotelController {
     }
 
     @GetMapping("/search/city")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelBtCity(@RequestParam String city, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelBytCity(@RequestParam String city, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelByCity(city, pageable);
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("search/address")
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByAddress(@RequestParam String address, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<HotelResponseDTO> response = hotelService.getHotelByAddress(address, pageable);
+
+        return ResponseEntity.ok(response);
+    }
+    
     
     
     

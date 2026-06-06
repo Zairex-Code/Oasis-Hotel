@@ -73,7 +73,7 @@ public class HotelServiceImpl implements HotelService{
     }
     @Override
     public Page<HotelResponseDTO> getHotelByCity(String city, Pageable pageable) {
-        // TODO get hotels by city
+        
         Page<Hotel> hotel = hotelRepository.findByCityContainingIgnoreCase(city, pageable);
         if(hotel.isEmpty()){
             throw new ResourceNotFoundException("Hotel not found with city: " + city);
@@ -82,7 +82,17 @@ public class HotelServiceImpl implements HotelService{
         return hotel.map(hotelMapper::toResponse);
     
     }
+    
+    @Override
+    public Page<HotelResponseDTO> getHotelByAddress(String address, Pageable pageable) {
+        // TODO get hotels by address
+        Page<Hotel> hotel = hotelRepository.findByAddressContainingIgnoreCase(address, pageable);
+        if(hotel.isEmpty()){
+            throw new ResourceNotFoundException("Hotel not found with address: " + address);
+        }
 
+        return hotel.map(hotelMapper::toResponse);
+    }
 
     @Override
     public HotelResponseDTO updateHotel(Long id, HotelRequestDTO request) {
@@ -118,11 +128,6 @@ public class HotelServiceImpl implements HotelService{
 
 
 
-    @Override
-    public Page<HotelResponseDTO> getHotelByAddress(String address, Pageable pageable) {
-        // TODO get hotels by address
-        throw new UnsupportedOperationException("Unimplemented method 'getHotelByAddress'");
-    }
 
 
 
