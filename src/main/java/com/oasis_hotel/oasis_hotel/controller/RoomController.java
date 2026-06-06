@@ -20,7 +20,10 @@ import com.oasis_hotel.oasis_hotel.service.RoomService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomStatus;
 
 
 
@@ -59,6 +62,14 @@ public class RoomController {
         Page<RoomResponseDTO> response = roomService.getRoomByCapacity(capacity, pageable);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("search/room-status")
+    public ResponseEntity<Page<RoomResponseDTO>> getRoomByStatus(@RequestParam RoomStatus status, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<RoomResponseDTO> response = roomService.getRoomByStatus(status, pageable);
+
+        return ResponseEntity.ok(response);
+    }
+    
     
     
     

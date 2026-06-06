@@ -66,6 +66,16 @@ public class RoomServiceImpl implements RoomService{
     }
 
     
+    @Override
+    public Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable) {
+        
+        Page<Room> room = roomRepository.findByCapacity(capacity, pageable);
+        if(room.isEmpty()){
+            throw new ResourceNotFoundException("Room not found with capacity for " + capacity );
+        }
+
+        return room.map(roomMapper::toResponse);
+    }
 
     @Override
     public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
@@ -80,20 +90,15 @@ public class RoomServiceImpl implements RoomService{
         return roomMapper.toResponse(roomUpdated);
     }
     @Override
-    public Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable) {
-        // TODO get room by capacity
-        Page<Room> room = roomRepository.findByCapacity(capacity, pageable);
+    public Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable) {
+        
+        Page<Room> room = roomRepository.findByRoomStatus(status, pageable);
         if(room.isEmpty()){
-            throw new ResourceNotFoundException("Room not found with capacity for " + capacity );
+            throw new ResourceNotFoundException("Room not found with status: " + status);
         }
 
-
         return room.map(roomMapper::toResponse);
-    }
-    @Override
-    public Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoomByStatus'");
+        
     }
     @Override
     public Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable) {
