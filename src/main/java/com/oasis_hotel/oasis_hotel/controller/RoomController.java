@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 
+
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/api/rooms")
@@ -49,6 +51,12 @@ public class RoomController {
     public ResponseEntity<Page<RoomResponseDTO>> getMethodName(@PathVariable Long hotelId, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
 
         Page<RoomResponseDTO> response = roomService.getRoomByHotelId(hotelId, pageable);
+        return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping("search/room-capacity")
+    public ResponseEntity<Page<RoomResponseDTO>> getMethodName(@RequestParam Integer capacity, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<RoomResponseDTO> response = roomService.getRoomByCapacity(capacity, pageable);
         return ResponseEntity.ok(response);
     }
     
