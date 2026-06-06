@@ -97,7 +97,18 @@ public class RoomServiceImpl implements RoomService{
         }
         return room.map(roomMapper::toResponse);
     }
+    
+    @Override
+    public Page<RoomResponseDTO> getRoomByPriceRange(Long hotelId,BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        
 
+        Page<Room> room = roomRepository.findByHotelIdAndPricePerNightBetween(hotelId, minPrice, maxPrice, pageable);
+
+        if(room.isEmpty()){
+            throw new ResourceNotFoundException("Room not found with that range");
+        }
+        return room.map(roomMapper::toResponse);
+    }
     @Override
     public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
         Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id : " + id));
@@ -109,17 +120,6 @@ public class RoomServiceImpl implements RoomService{
 
         Room roomUpdated = roomRepository.save(room);
         return roomMapper.toResponse(roomUpdated);
-    }
-    @Override
-    public Page<RoomResponseDTO> getRoomByPriceRange(Long hotelId,BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
-        
-
-        Page<Room> room = roomRepository.findByHotelIdAndPricePerNightBetween(hotelId, minPrice, maxPrice, pageable);
-
-        if(room.isEmpty()){
-            throw new ResourceNotFoundException("Room not found with that range");
-        }
-        return room.map(roomMapper::toResponse);
     }
 
 
