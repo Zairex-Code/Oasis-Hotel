@@ -71,6 +71,17 @@ public class HotelServiceImpl implements HotelService{
         return  hotel.map(hotelMapper::toResponse);
         
     }
+    @Override
+    public Page<HotelResponseDTO> getHotelByCity(String city, Pageable pageable) {
+        // TODO get hotels by city
+        Page<Hotel> hotel = hotelRepository.findByCityContainingIgnoreCase(city, pageable);
+        if(hotel.isEmpty()){
+            throw new ResourceNotFoundException("Hotel not found with city: " + city);
+        }
+
+        return hotel.map(hotelMapper::toResponse);
+    
+    }
 
 
     @Override
@@ -100,6 +111,41 @@ public class HotelServiceImpl implements HotelService{
         Hotel hotelUpdated = hotelRepository.save(hotel);
 
         return hotelMapper.toResponse(hotelUpdated);
+    }
+
+
+
+
+
+
+    @Override
+    public Page<HotelResponseDTO> getHotelByAddress(String address, Pageable pageable) {
+        // TODO get hotels by address
+        throw new UnsupportedOperationException("Unimplemented method 'getHotelByAddress'");
+    }
+
+
+
+    @Override
+    public Page<HotelResponseDTO> getHotelsGoodRated(Pageable pageable) {
+        // TODO get hotels good rated
+        throw new UnsupportedOperationException("Unimplemented method 'getHotelsGoodRated'");
+    }
+
+
+
+    @Override
+    public Page<HotelResponseDTO> getHotelRecentlyReleased(Pageable pageable) {
+        // TODO get hotels recently added
+        throw new UnsupportedOperationException("Unimplemented method 'getHotelRecentlyReleased'");
+    }
+
+
+
+    @Override
+    public Page<HotelResponseDTO> getHotelByStars(Integer stars, Pageable pageable) {
+        // TODO get hotels by stars
+        throw new UnsupportedOperationException("Unimplemented method 'getHotelByStars'");
     }
 
 

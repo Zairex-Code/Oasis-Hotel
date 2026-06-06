@@ -91,7 +91,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Page<UserResponseDTO> getUsersByRole(Role role, Pageable pageable) {
-        // TODO get users by role
 
         Page<User> user = userRepository.findByRole(role, pageable);
         if (user.isEmpty()) {

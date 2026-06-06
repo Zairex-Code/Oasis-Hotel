@@ -1,5 +1,7 @@
 package com.oasis_hotel.oasis_hotel.service.impl;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.oasis_hotel.oasis_hotel.dto.room.RoomUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
 import com.oasis_hotel.oasis_hotel.entity.Room;
 import com.oasis_hotel.oasis_hotel.entity.enums.RoomStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.RoomMapper;
 import com.oasis_hotel.oasis_hotel.repository.HotelRepository;
@@ -63,6 +66,31 @@ public class RoomServiceImpl implements RoomService{
 
         Room roomUpdated = roomRepository.save(room);
         return roomMapper.toResponse(roomUpdated);
+    }
+    @Override
+    public RoomResponseDTO getRoomByRoomNumber(String roomNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomByRoomNumber'");
+    }
+    @Override
+    public Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomByCapacity'");
+    }
+    @Override
+    public Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomByStatus'");
+    }
+    @Override
+    public Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomByType'");
+    }
+    @Override
+    public Page<RoomResponseDTO> getRoomByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoomByPriceRange'");
     }
 
 

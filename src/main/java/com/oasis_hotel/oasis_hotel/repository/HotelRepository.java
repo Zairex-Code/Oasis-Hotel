@@ -10,5 +10,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
     
     //SELECT * FROM hotels WHERE UPPER(name) LIKE UPPER('%oasis%');
     Page<Hotel> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Hotel> findByCityContainingIgnoreCase(String city, Pageable pageable);
     
 }
