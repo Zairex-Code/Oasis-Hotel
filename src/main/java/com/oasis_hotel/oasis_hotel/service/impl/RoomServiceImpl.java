@@ -89,7 +89,7 @@ public class RoomServiceImpl implements RoomService{
     }
     @Override
     public Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable) {
-        // TODO Auto-generated method stub
+        
 
         Page<Room> room = roomRepository.findByRoomType(type, pageable);
         if(room.isEmpty()){
@@ -111,9 +111,15 @@ public class RoomServiceImpl implements RoomService{
         return roomMapper.toResponse(roomUpdated);
     }
     @Override
-    public Page<RoomResponseDTO> getRoomByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoomByPriceRange'");
+    public Page<RoomResponseDTO> getRoomByPriceRange(Long hotelId,BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        
+
+        Page<Room> room = roomRepository.findByHotelIdAndPricePerNightBetween(hotelId, minPrice, maxPrice, pageable);
+
+        if(room.isEmpty()){
+            throw new ResourceNotFoundException("Room not found with that range");
+        }
+        return room.map(roomMapper::toResponse);
     }
 
 

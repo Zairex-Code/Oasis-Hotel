@@ -1,5 +1,7 @@
 package com.oasis_hotel.oasis_hotel.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -77,6 +79,14 @@ public class RoomController {
     }
     
     
+    @GetMapping("search/price-range/{hotelId}/")
+    public ResponseEntity<Page<RoomResponseDTO>> getMethodName( @PathVariable Long hotelId, 
+                                                                @RequestParam BigDecimal min, 
+                                                                @RequestParam BigDecimal max, 
+                                                                @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<RoomResponseDTO> response = roomService.getRoomByPriceRange(hotelId, min, max, pageable);
+        return ResponseEntity.ok(response);
+    }
     
     
     

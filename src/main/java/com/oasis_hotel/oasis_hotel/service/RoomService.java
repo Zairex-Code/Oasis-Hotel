@@ -19,6 +19,6 @@ public interface RoomService {
     Page<RoomResponseDTO> getRoomByCapacity(Integer capacity, Pageable pageable);
     Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable);
     Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable);
-    Page<RoomResponseDTO> getRoomByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+    Page<RoomResponseDTO> getRoomByPriceRange(Long hotelId,BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
     RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request);
 }
