@@ -1,5 +1,7 @@
 package com.oasis_hotel.oasis_hotel.repository;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +16,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
     Page<Hotel> findByAddressContainingIgnoreCase(String address, Pageable pageable);
     Page<Hotel> findByStarsGreaterThan(Integer stars , Pageable pageable);
     Page<Hotel> findByStars(Integer stars, Pageable pageable);
+    Page<Hotel> findByCreatedAtGreaterThanEqual(LocalDateTime dateTime, Pageable pageable);
     
 }

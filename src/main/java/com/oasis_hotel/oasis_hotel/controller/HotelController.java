@@ -87,6 +87,12 @@ public class HotelController {
         return ResponseEntity.ok(response);
     }
     
+    @GetMapping("search/recently-released")
+    public ResponseEntity<Page<HotelResponseDTO>> getRecentlyReleasedHotel(@PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+        Page<HotelResponseDTO> response = hotelService.getHotelRecentlyReleased(pageable);
+        return ResponseEntity.ok(response);
+    }
+    
     
     
 

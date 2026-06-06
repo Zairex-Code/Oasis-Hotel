@@ -1,6 +1,8 @@
 package com.oasis_hotel.oasis_hotel.service.impl;
 
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -120,7 +122,14 @@ public class HotelServiceImpl implements HotelService{
     @Override
     public Page<HotelResponseDTO> getHotelRecentlyReleased(Pageable pageable) {
         // TODO get hotels recently added
-        throw new UnsupportedOperationException("Unimplemented method 'getHotelRecentlyReleased'");
+        LocalDateTime recentlyDays = LocalDateTime.now().minusDays(15);
+        Page<Hotel> hotel = hotelRepository.findByCreatedAtGreaterThanEqual(recentlyDays, pageable);
+
+        if(hotel.isEmpty()){
+            throw new ResourceNotFoundException("Hotel Not Found Added Recently");
+        }
+
+        return hotel.map(hotelMapper::toResponse);
     }
 
     @Override
