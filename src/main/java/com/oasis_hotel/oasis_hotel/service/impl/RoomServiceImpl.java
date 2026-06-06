@@ -76,19 +76,6 @@ public class RoomServiceImpl implements RoomService{
 
         return room.map(roomMapper::toResponse);
     }
-
-    @Override
-    public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
-        Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id : " + id));
-        room.setRoomNumber(request.roomNumber());
-        room.setCapacity(request.capacity());
-        room.setPricePerNight(request.pricePerNight());
-        room.setRoomType(request.roomType());
-        room.setRoomStatus(request.roomStatus());
-
-        Room roomUpdated = roomRepository.save(room);
-        return roomMapper.toResponse(roomUpdated);
-    }
     @Override
     public Page<RoomResponseDTO> getRoomByStatus(RoomStatus status, Pageable pageable) {
         
@@ -103,7 +90,25 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public Page<RoomResponseDTO> getRoomByType(RoomType type, Pageable pageable) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoomByType'");
+
+        Page<Room> room = roomRepository.findByRoomType(type, pageable);
+        if(room.isEmpty()){
+            throw new ResourceNotFoundException("Room not foundd with type " + type);
+        }
+        return room.map(roomMapper::toResponse);
+    }
+
+    @Override
+    public RoomResponseDTO updateRoom(Long id, RoomUpdateRequestDTO request) {
+        Room room = roomRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Room not found with id : " + id));
+        room.setRoomNumber(request.roomNumber());
+        room.setCapacity(request.capacity());
+        room.setPricePerNight(request.pricePerNight());
+        room.setRoomType(request.roomType());
+        room.setRoomStatus(request.roomStatus());
+
+        Room roomUpdated = roomRepository.save(room);
+        return roomMapper.toResponse(roomUpdated);
     }
     @Override
     public Page<RoomResponseDTO> getRoomByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
