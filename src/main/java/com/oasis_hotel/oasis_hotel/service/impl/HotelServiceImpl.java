@@ -85,10 +85,21 @@ public class HotelServiceImpl implements HotelService{
     
     @Override
     public Page<HotelResponseDTO> getHotelByAddress(String address, Pageable pageable) {
-        // TODO get hotels by address
         Page<Hotel> hotel = hotelRepository.findByAddressContainingIgnoreCase(address, pageable);
         if(hotel.isEmpty()){
             throw new ResourceNotFoundException("Hotel not found with address: " + address);
+        }
+
+        return hotel.map(hotelMapper::toResponse);
+    }
+    @Override
+    public Page<HotelResponseDTO> getHotelsGoodRated(Pageable pageable) {
+        // TODO get hotels good rated
+        Integer minStarRule = 3;
+        Page<Hotel> hotel = hotelRepository.findByStarsGreaterThan(minStarRule, pageable);
+
+        if(hotel.isEmpty()){
+            throw new ResourceNotFoundException("Hotel not found with " + minStarRule );
         }
 
         return hotel.map(hotelMapper::toResponse);
@@ -131,11 +142,6 @@ public class HotelServiceImpl implements HotelService{
 
 
 
-    @Override
-    public Page<HotelResponseDTO> getHotelsGoodRated(Pageable pageable) {
-        // TODO get hotels good rated
-        throw new UnsupportedOperationException("Unimplemented method 'getHotelsGoodRated'");
-    }
 
 
 

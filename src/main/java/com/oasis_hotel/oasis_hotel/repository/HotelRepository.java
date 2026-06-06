@@ -12,5 +12,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
     Page<Hotel> findByNameContainingIgnoreCase(String name, Pageable pageable);
     Page<Hotel> findByCityContainingIgnoreCase(String city, Pageable pageable);
     Page<Hotel> findByAddressContainingIgnoreCase(String address, Pageable pageable);
+    Page<Hotel> findByStarsGreaterThan(Integer stars , Pageable pageable);
     
 }

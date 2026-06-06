@@ -71,6 +71,14 @@ public class HotelController {
         return ResponseEntity.ok(response);
     }
     
+    @GetMapping("search/goodRatedHotels")
+    public ResponseEntity<Page<HotelResponseDTO>> getMethodName(@PageableDefault(size=10,page=0, sort="id") Pageable pageable) {
+        
+        Page<HotelResponseDTO> response = hotelService.getHotelsGoodRated(pageable);
+
+        return ResponseEntity.ok(response);
+        
+    }
     
     
     
