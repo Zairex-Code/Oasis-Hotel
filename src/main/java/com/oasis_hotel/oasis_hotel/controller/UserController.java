@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/search")
+    @GetMapping("/search/name")
     public ResponseEntity<Page<UserResponseDTO>> getUserByName(@RequestParam String name, @PageableDefault(size = 10, page = 0, sort = "firstName") Pageable pageable) {
         Page<UserResponseDTO> response = userService.getUserByName(name, pageable);
 
