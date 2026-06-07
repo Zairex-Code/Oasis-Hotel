@@ -15,7 +15,7 @@ public record ReservationRequestDTO(
 
     @NotNull(message="check in date is mandatory")
     @FutureOrPresent(message="Check-in date should be today or a future date")
-    LocalDate chekInDate,
+    LocalDate checkInDate,
 
     @NotNull(message="check out date is mandatory")
     LocalDate checkOutDate,

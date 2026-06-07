@@ -43,9 +43,8 @@ public class RoomServiceImpl implements RoomService{
         Room savedRoom = roomRepository.save(roomToSave);
         return roomMapper.toResponse(savedRoom);
         
-        
-        
     }
+    
     @Override
     public Page<RoomResponseDTO> getAllRooms(Pageable pageable) {
         return roomRepository.findAll(pageable).map(roomMapper::toResponse);
