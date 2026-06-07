@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.ManyToAny;
 
 import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
 
@@ -26,6 +25,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -34,6 +36,7 @@ import lombok.Setter;
 @Entity
 @Table(name="reservations")
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -66,6 +69,4 @@ public class Reservation {
     @CreationTimestamp
     private LocalDateTime createdAt;
     
-
-
 }
