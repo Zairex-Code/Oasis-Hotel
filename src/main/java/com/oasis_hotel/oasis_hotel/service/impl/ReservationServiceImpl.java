@@ -1,0 +1,92 @@
+package com.oasis_hotel.oasis_hotel.service.impl;
+
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.oasis_hotel.oasis_hotel.dto.reservation.ReservationRequestDTO;
+import com.oasis_hotel.oasis_hotel.dto.reservation.ReservationResponseDTO;
+import com.oasis_hotel.oasis_hotel.entity.Reservation;
+import com.oasis_hotel.oasis_hotel.entity.Room;
+import com.oasis_hotel.oasis_hotel.entity.User;
+import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
+import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
+import com.oasis_hotel.oasis_hotel.mapper.ReservationMapper;
+import com.oasis_hotel.oasis_hotel.repository.ReservationRepository;
+import com.oasis_hotel.oasis_hotel.repository.RoomRepository;
+import com.oasis_hotel.oasis_hotel.repository.UserRepository;
+import com.oasis_hotel.oasis_hotel.service.ReservationService;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class ReservationServiceImpl implements ReservationService{
+    private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
+    private final ReservationMapper reservationMapper;
+    
+    
+    @Override
+    public ReservationResponseDTO createReservation(ReservationRequestDTO request) {
+        // TODO Create a reservation
+
+        if(request.checkOutDate().isBefore(request.checkInDate())|| request.checkOutDate().isEqual(request.checkInDate())){
+            throw new IllegalArgumentException("check out date must be al least 1 day after the check out");
+        }
+
+        User user = userRepository.findById(request.userId())
+                                .orElseThrow(()-> new ResourceNotFoundException("User not found with id: " + request.userId()) );
+
+        Room room = roomRepository.findById(request.roomId())
+                                .orElseThrow(()-> new ResourceNotFoundException("Room not found with id: " + request.roomId()));
+                                
+
+        if(request.numberOfGuests() > room.getCapacity()){
+            throw new IllegalArgumentException("This room doesn't have capacity for " + request.numberOfGuests() + " guests max capability :" + room.getCapacity() );
+        }
+
+        List<Reservation> conflicts = reservationRepository.findConflictingReservations(request.roomId(), request.checkInDate(), request.checkOutDate());
+
+        if(!conflicts.isEmpty()){
+            throw new IllegalStateException("sorry, this room is already booked");
+        }
+
+        // ChronoUnit is a modern way to count days between 2 dates
+        long nights = ChronoUnit.DAYS.between(request.checkInDate(), request.checkOutDate());
+
+        
+        BigDecimal totalPrice = room.getPricePerNight().multiply(BigDecimal.valueOf(nights));
+
+        Reservation reservation = reservationMapper.toEntity(request);
+        reservation.setUser(user);
+        reservation.setRoom(room);
+        reservation.setTotalPrice(totalPrice);
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+
+
+        Reservation savedReservation = reservationRepository.save(reservation);
+        return reservationMapper.toResponse(savedReservation);
+    }
+
+    @Override
+    public Page<ReservationResponseDTO> getReservationsByUser(Long userId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getReservationsByUser'");
+    }
+    @Override
+    public ReservationResponseDTO cancelReservation(Long reservationId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cancelReservation'");
+    }
+
+
+
+}
