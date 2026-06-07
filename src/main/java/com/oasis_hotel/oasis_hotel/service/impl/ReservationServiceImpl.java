@@ -37,7 +37,7 @@ public class ReservationServiceImpl implements ReservationService{
     
     @Override
     public ReservationResponseDTO createReservation(ReservationRequestDTO request) {
-        // TODO Create a reservation
+        
 
         if(request.checkOutDate().isBefore(request.checkInDate())|| request.checkOutDate().isEqual(request.checkInDate())){
             throw new IllegalArgumentException("check out date must be al least 1 day after the check out");
@@ -48,8 +48,7 @@ public class ReservationServiceImpl implements ReservationService{
 
         Room room = roomRepository.findById(request.roomId())
                                 .orElseThrow(()-> new ResourceNotFoundException("Room not found with id: " + request.roomId()));
-                                
-
+        
         if(request.numberOfGuests() > room.getCapacity()){
             throw new IllegalArgumentException("This room doesn't have capacity for " + request.numberOfGuests() + " guests max capability :" + room.getCapacity() );
         }
@@ -110,6 +109,18 @@ public class ReservationServiceImpl implements ReservationService{
     public Page<ReservationResponseDTO> getReservationByRoomType(RoomType roomType, Pageable pageable) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getReservationByRoomType'");
+    }
+
+    @Override
+    public ReservationResponseDTO getReservationById(Long id) {
+        // TODO getReservationById
+        
+        Reservation reservation = reservationRepository.findById(id)
+                                .orElseThrow(()->new ResourceNotFoundException("Reservation not found with id: " + id));
+        
+        return reservationMapper.toResponse(reservation);
+
+
     }
 
     

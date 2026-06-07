@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -47,6 +49,14 @@ public class ReservationController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservationResponseDTO>  getReservationById(@PathVariable Long id) {
+        
+        ReservationResponseDTO response = reservationService.getReservationById(id);
+        return ResponseEntity.ok(response);
+    }
+    
     
 
     @PutMapping("/{id}/cancel")

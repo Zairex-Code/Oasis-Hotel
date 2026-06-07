@@ -9,6 +9,7 @@ import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 
 public interface ReservationService {
     ReservationResponseDTO createReservation(ReservationRequestDTO request);
+    ReservationResponseDTO getReservationById(Long id);
     Page<ReservationResponseDTO> getReservationsByUser(Long userId, Pageable pageable);
     Page<ReservationResponseDTO> getReservationByRoomType(RoomType roomType, Pageable pageable);
     ReservationResponseDTO cancelReservation(Long reservationId);
