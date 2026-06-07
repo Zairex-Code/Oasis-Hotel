@@ -1,29 +1,29 @@
 package com.oasis_hotel.oasis_hotel.dto.reservation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
 
 public record ReservationResponseDTO(
-    @NotNull(message="user id is mandatory")
+    Long id,
     Long userId,
-
-    @NotNull(message="room id is mandatory")
+    String userFirstName,
+    String userLastName,
+    String userEmail,
+    String hotelId,
+    String hotelName,
     Long roomId,
-
-    @NotNull(message="check in date is mandatory")
-    @FutureOrPresent(message="Check-in date should be today or a future date")
-    LocalDate chekInDate,
-
-    @NotNull(message="check out date is mandatory")
+    String roomNumber,
+    LocalDate checkInDate,
     LocalDate checkOutDate,
+    Integer numberOfGuests,
+    BigDecimal totalPrice,
+    ReservationStatus status,
+    LocalDateTime createdAt
 
-    @NotNull(message="number of guests is mandatory")
-    @Positive(message="number of guest must be greater than zero")
-    Integer numberOfGuests
-
+    
     
 ) {
     

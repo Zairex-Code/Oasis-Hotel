@@ -25,4 +25,4 @@ public interface RoomMapper {
     // Since MapStruct cannot fetch data from the database, we tell it to ignore the 'hotel' field.
     @Mapping(target = "hotel", ignore = true)
     Room toEntity(RoomRequestDTO request);
-}
+}                                                       
