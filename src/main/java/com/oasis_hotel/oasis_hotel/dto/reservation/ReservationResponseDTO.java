@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 
 public record ReservationResponseDTO(
     Long id,
@@ -16,6 +17,7 @@ public record ReservationResponseDTO(
     String hotelName,
     Long roomId,
     String roomNumber,
+    RoomType roomType,
     LocalDate checkInDate,
     LocalDate checkOutDate,
     Integer numberOfGuests,

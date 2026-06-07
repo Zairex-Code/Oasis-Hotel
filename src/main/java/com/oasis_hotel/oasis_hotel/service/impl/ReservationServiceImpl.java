@@ -77,6 +77,14 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
+    public ReservationResponseDTO getReservationById(Long id) {
+
+        Reservation reservation = reservationRepository.findById(id)
+                                .orElseThrow(()->new ResourceNotFoundException("Reservation not found with id: " + id));
+        
+        return reservationMapper.toResponse(reservation);
+    }
+    @Override
     public Page<ReservationResponseDTO> getReservationsByUser(Long userId, Pageable pageable) {
         if(!userRepository.existsById(userId)){
             throw new ResourceNotFoundException("USer not found with id: " + userId);
@@ -107,21 +115,15 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Page<ReservationResponseDTO> getReservationByRoomType(RoomType roomType, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getReservationByRoomType'");
+        // TODO get reservation By room type
+
+        Page<Reservation> reservation = reservationRepository.findByRoomType(roomType, pageable);
+        if (reservation.isEmpty()) {
+            throw new ResourceNotFoundException("Reservation not found with type: " + roomType);
+        }
+        return reservation.map(reservationMapper::toResponse);
     }
 
-    @Override
-    public ReservationResponseDTO getReservationById(Long id) {
-        // TODO getReservationById
-        
-        Reservation reservation = reservationRepository.findById(id)
-                                .orElseThrow(()->new ResourceNotFoundException("Reservation not found with id: " + id));
-        
-        return reservationMapper.toResponse(reservation);
-
-
-    }
 
     
 

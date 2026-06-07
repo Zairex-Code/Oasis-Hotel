@@ -10,11 +10,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.oasis_hotel.oasis_hotel.entity.Reservation;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 
 public interface ReservationRepository extends JpaRepository<Reservation,Long >{
 
         Page<Reservation> findById(Long id, Pageable pageable);
         Page<Reservation> findByUserId(Long userId, Pageable pageable);
+
+        @Query("SELECT r FROM Reservation r WHERE r.room.roomStatus = :roomStatus")
+        Page<Reservation> findByRoomStatus(@Param("roomStatus") RoomStatus roomStatus, Pageable pageable);
+
+        @Query("SELECT r FROM Reservation r WHERE r.room.roomType = :roomType")
+        Page<Reservation> findByRoomType(@Param("roomType") RoomType roomType, Pageable pageable);
+
 
         
         // Search for active bookings for that room where the date ranges conflict

@@ -23,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
+
 
 
 
@@ -56,6 +58,14 @@ public class ReservationController {
         ReservationResponseDTO response = reservationService.getReservationById(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("search/room-type")
+    public ResponseEntity<Page<ReservationResponseDTO>> getReservationByRoomType(@RequestParam RoomType roomType,@PageableDefault(size=10, page=0, sort="createdAt", direction = Direction.DESC) Pageable pageable) {
+        Page<ReservationResponseDTO> response = reservationService.getReservationByRoomType(roomType, pageable) ;
+        
+        return ResponseEntity.ok(response);
+    }
+    
     
     
 

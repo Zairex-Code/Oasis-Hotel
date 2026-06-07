@@ -19,6 +19,7 @@ public interface ReservationMapper {
     @Mapping(source="room.hotel.name", target="hotelName")
     @Mapping(source="room.id", target="roomId")
     @Mapping(source="room.roomNumber", target="roomNumber")
+    @Mapping(source="room.roomType", target="roomType")
     ReservationResponseDTO toResponse(Reservation reservation);
 
     @Mapping(target="id", ignore=true)
