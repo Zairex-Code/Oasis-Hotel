@@ -79,12 +79,21 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Page<ReservationResponseDTO> getReservationsByUser(Long userId, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getReservationsByUser'");
+        if(!userRepository.existsById(userId)){
+            throw new ResourceNotFoundException("USer not found with id: " + userId);
+        }
+
+        Page<Reservation> reservation = reservationRepository.findByUserId(userId, pageable);
+        
+        if(reservation.isEmpty()){
+            throw new ResourceNotFoundException("reservation not found with id: " + userId);
+        }
+        return reservation.map(reservationMapper::toResponse);
     }
+
     @Override
     public ReservationResponseDTO cancelReservation(Long reservationId) {
-        // TODO Cancel reservation
+        
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(()-> new ResourceNotFoundException("reservation not found with id: " + reservationId));
         
         if(reservation.getStatus().equals(ReservationStatus.CANCELLED)){
@@ -103,6 +112,7 @@ public class ReservationServiceImpl implements ReservationService{
         throw new UnsupportedOperationException("Unimplemented method 'getReservationByRoomType'");
     }
 
+    
 
 
 }

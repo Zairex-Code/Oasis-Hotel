@@ -1,5 +1,9 @@
 package com.oasis_hotel.oasis_hotel.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,10 @@ import com.oasis_hotel.oasis_hotel.service.ReservationService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 
 
@@ -32,6 +40,14 @@ public class ReservationController {
         
         return new ResponseEntity<>(reservation ,HttpStatus.CREATED);
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<ReservationResponseDTO>> getReservationByUserId(@PathVariable Long userId, @PageableDefault(size=10, page=0, sort="createdAt",direction=Direction.DESC) Pageable pageable) {
+        Page<ReservationResponseDTO> response = reservationService.getReservationsByUser(userId, pageable);
+
+        return ResponseEntity.ok(response);
+    }
+    
 
     @PutMapping("/{id}/cancel")
     public ResponseEntity<ReservationResponseDTO> cancelReservation(@Valid @PathVariable Long id) {
