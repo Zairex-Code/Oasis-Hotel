@@ -14,6 +14,7 @@ import com.oasis_hotel.oasis_hotel.entity.Reservation;
 import com.oasis_hotel.oasis_hotel.entity.Room;
 import com.oasis_hotel.oasis_hotel.entity.User;
 import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.ReservationMapper;
 import com.oasis_hotel.oasis_hotel.repository.ReservationRepository;
@@ -83,8 +84,23 @@ public class ReservationServiceImpl implements ReservationService{
     }
     @Override
     public ReservationResponseDTO cancelReservation(Long reservationId) {
+        // TODO Cancel reservation
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(()-> new ResourceNotFoundException("reservation not found with id: " + reservationId));
+        
+        if(reservation.getStatus().equals(ReservationStatus.CANCELLED)){
+            throw new IllegalStateException("This reservation was already cancelled");
+        }
+
+        reservation.setStatus(ReservationStatus.CANCELLED);
+
+        Reservation reservationSaved = reservationRepository.save(reservation);
+        return reservationMapper.toResponse(reservationSaved);
+    }
+
+    @Override
+    public Page<ReservationResponseDTO> getReservationByRoomType(RoomType roomType, Pageable pageable) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cancelReservation'");
+        throw new UnsupportedOperationException("Unimplemented method 'getReservationByRoomType'");
     }
 
 
