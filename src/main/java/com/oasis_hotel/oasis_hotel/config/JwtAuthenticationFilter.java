@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.oasis_hotel.oasis_hotel.service.JwtService;
@@ -16,11 +17,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotBlank;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     private final JwtService jwtService;
@@ -33,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     
     @Override
     protected void doFilterInternal(
-                            @NotBlank HttpServletRequest request, 
-                            @NotBlank HttpServletResponse response, 
-                            @NotBlank FilterChain filterChain) throws ServletException, IOException {
+                            @NonNull HttpServletRequest request, 
+                            @NonNull HttpServletResponse response, 
+                            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         
         // 1. Extract the Authorization header
