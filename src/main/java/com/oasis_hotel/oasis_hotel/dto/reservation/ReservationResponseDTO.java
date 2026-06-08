@@ -13,7 +13,7 @@ public record ReservationResponseDTO(
     String userFirstName,
     String userLastName,
     String userEmail,
-    String hotelId,
+    Long hotelId,
     String hotelName,
     Long roomId,
     String roomNumber,
