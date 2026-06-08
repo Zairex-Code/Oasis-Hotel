@@ -36,6 +36,18 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.3'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
+	// Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    
+    // Librerías para JWT (Versión moderna)
+	//JJWT :: API
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.7'
+
+	//JJWT :: Impl
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.7'
+	//JJWT :: Extensions :: Jackson
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.7'
+
 }
 
 tasks.named('test') {

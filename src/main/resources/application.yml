@@ -1,6 +1,10 @@
 spring:
     application:
         name: oasis-hotels-api
+    
+    profiles:
+        active: dev
+    
 
     datasource:
         url: jdbc:mysql://localhost:3308/oasis_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
