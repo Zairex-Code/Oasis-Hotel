@@ -1,8 +1,9 @@
 security:
     jwt:
         
-        # Una llave hexadecimal de 256 bits segura para pruebas locales
+        # Una llave hexadecimal de 256 bits segura para pruebas locales we could use this command on Linux ( openssl rand -hex 32 )
+
         secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-        
+
         # Tiempo de expiración del pasaporte (1 día en milisegundos)
         expiration: 86400000
