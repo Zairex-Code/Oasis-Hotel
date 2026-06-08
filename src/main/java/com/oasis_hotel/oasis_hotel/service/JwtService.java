@@ -87,6 +87,13 @@ public class JwtService {
     }
 
 
+    // ==========================================
+    // 4. CRYPTOGRAPHIC KEY MANAGEMENT
+    // ==========================================
+    /**
+     * Converts our Base64 string from application.yml into a real
+     * cryptographic key that Java's HMAC-SHA algorithms can understand.
+     */
 
     private SecretKey getSignInKey(){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
