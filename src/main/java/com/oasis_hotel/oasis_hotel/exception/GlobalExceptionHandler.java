@@ -31,6 +31,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    public ProblemDetail handleBusinessRuleException(RuntimeException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        problemDetail.setTitle("Business Rule violation");
+        problemDetail.setType(URI.create("https://api.oasishotels.com/errors/business-rule-violation"));
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException e,
