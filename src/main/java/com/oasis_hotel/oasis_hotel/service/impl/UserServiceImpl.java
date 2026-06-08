@@ -2,6 +2,7 @@ package com.oasis_hotel.oasis_hotel.service.impl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
@@ -23,12 +24,14 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO request){
         User userToSave = userMapper.toEntity(request);
+        userToSave.setPassword(passwordEncoder.encode(request.password()));
         User userSaved = userRepository.save(userToSave);
         return userMapper.toResponse(userSaved);
 
@@ -65,6 +68,7 @@ public class UserServiceImpl implements UserService{
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
         user.setEmail(request.email());
+
         
         User userUpdated = userRepository.save(user);
         
@@ -75,7 +79,7 @@ public class UserServiceImpl implements UserService{
     public UserResponseDTO setUSerPassword(Long id, UserSetPasswordRequestDTO request) {
         User user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found with id : " + id));
 
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode(request.password()));
 
         User userPasswordUpdated = userRepository.save(user);
         
