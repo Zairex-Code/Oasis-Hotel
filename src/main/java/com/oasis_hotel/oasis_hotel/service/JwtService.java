@@ -29,7 +29,7 @@ public class JwtService {
     // 1. TOKEN CREATION (The Passport)
     // ==========================================
 
-    public String generationToken(String email , String role){
+    public String generateToken(String email , String role){
         Map<String, Object> extraClaims = new HashMap<>();
 
         extraClaims.put("role", role);
