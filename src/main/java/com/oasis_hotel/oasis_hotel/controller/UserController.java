@@ -97,6 +97,7 @@ public class UserController {
 
     
     @PutMapping("/set-role/{id}")
+    
     public ResponseEntity<UserResponseDTO> setUserRole(@PathVariable Long id, @RequestBody UserRoleRequestDTO request) {
         UserResponseDTO response = userService.setUserRole(id, request);
         

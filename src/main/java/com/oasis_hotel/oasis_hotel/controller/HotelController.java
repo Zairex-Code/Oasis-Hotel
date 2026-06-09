@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,12 +97,14 @@ public class HotelController {
     
     
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<HotelResponseDTO> createHotel(@Valid @RequestBody HotelRequestDTO request) {
         HotelResponseDTO newHotel = hotelService.createHotel(request);
         return new ResponseEntity<>(newHotel, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<HotelResponseDTO> updateHotel(@PathVariable Long id, @Valid @RequestBody HotelRequestDTO request) {
         HotelResponseDTO hotelUpdated = hotelService.updateHotel(id, request);
@@ -110,6 +113,8 @@ public class HotelController {
     }
 
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/status/{id}")
     public ResponseEntity<HotelResponseDTO> setHotelStatus(@PathVariable Long id,@Valid @RequestBody  HotelSetStatusRequestDTO request) {
         HotelResponseDTO response = hotelService.setHotelStatus(id, request);

@@ -56,7 +56,7 @@ public class RoomController {
     }
 
     @GetMapping("/hotelId/{hotelId}")
-    public ResponseEntity<Page<RoomResponseDTO>> getMethodName(@PathVariable Long hotelId, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<RoomResponseDTO>> getRoomsByHotelId(@PathVariable Long hotelId, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
 
         Page<RoomResponseDTO> response = roomService.getRoomByHotelId(hotelId, pageable);
         return ResponseEntity.ok(response);
@@ -92,15 +92,15 @@ public class RoomController {
     
     
     // SECURED: Only users with the role 'ADMIN' can create a room
-    @PostMapping
     @PreAuthorize("hasRole('ADMIN')") // Protected this endpoint with RBAC
+    @PostMapping
     public ResponseEntity<RoomResponseDTO>createRoom(@Valid @RequestBody RoomRequestDTO request) {
         RoomResponseDTO newRoom = roomService.createRoom(request);
         return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
     // SECURED: Only users with the role 'ADMIN' can update a room
-    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
     public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id,@Valid @RequestBody RoomUpdateRequestDTO request) {
         RoomResponseDTO response = roomService.updateRoom(id, request);
 
