@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 import com.oasis_hotel.oasis_hotel.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,7 @@ public class ApplicationConfig {
     /**
      * Tells Spring Security how to fetch users from our database
      */
+    @Bean
     public UserDetailsService userDetailsService(){
         return username -> userRepository.findByEmail(username)
                                         .orElseThrow(()-> new UsernameNotFoundException("User not found in the database"));
