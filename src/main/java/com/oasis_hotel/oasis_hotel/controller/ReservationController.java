@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -59,6 +60,7 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("search/room-type")
     public ResponseEntity<Page<ReservationResponseDTO>> getReservationByRoomType(@RequestParam RoomType roomType,@PageableDefault(size=10, page=0, sort="createdAt", direction = Direction.DESC) Pageable pageable) {
         Page<ReservationResponseDTO> response = reservationService.getReservationByRoomType(roomType, pageable) ;
