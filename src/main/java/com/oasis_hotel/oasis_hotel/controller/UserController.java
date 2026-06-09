@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,19 +37,21 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserService userService;
 
-    
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> getAllUser(@PageableDefault Pageable pageable) {
         Page<UserResponseDTO> response = userService.getAllUsers(pageable);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO response = userService.getUserById(id);
         return ResponseEntity.ok(response);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search/name")
     public ResponseEntity<Page<UserResponseDTO>> getUserByName(@RequestParam String name, @PageableDefault(size = 10, page = 0, sort = "firstName") Pageable pageable) {
         Page<UserResponseDTO> response = userService.getUserByName(name, pageable);
@@ -56,12 +59,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email) {
         UserResponseDTO response = userService.getUserByEmail(email);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search/role")
     public ResponseEntity<Page<UserResponseDTO>> getUserByRole(@RequestParam Role role, @PageableDefault(size = 10, page = 0,sort = "id") Pageable pageable) {
         Page<UserResponseDTO> response = userService.getUsersByRole(role, pageable);
@@ -80,6 +85,7 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UserUpdateRequestDTO request) {
         UserResponseDTO userUpdated = userService.updateUser(id, request);
@@ -87,6 +93,8 @@ public class UserController {
         return ResponseEntity.ok(userUpdated);
     }
 
+
+    @PreAuthorize("authentication.principal.id == #id")
     @PutMapping("/password/{id}")
     public ResponseEntity<UserResponseDTO> setUserPassword(@PathVariable Long id,@Valid @RequestBody  UserSetPasswordRequestDTO request) {
         UserResponseDTO userPasswordUpdated = userService.setUSerPassword(id, request);
@@ -95,9 +103,8 @@ public class UserController {
         
     }
 
-    
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/set-role/{id}")
-    
     public ResponseEntity<UserResponseDTO> setUserRole(@PathVariable Long id, @RequestBody UserRoleRequestDTO request) {
         UserResponseDTO response = userService.setUserRole(id, request);
         
