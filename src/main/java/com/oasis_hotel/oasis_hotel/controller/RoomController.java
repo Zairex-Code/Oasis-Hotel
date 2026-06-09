@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,14 +90,16 @@ public class RoomController {
     }
     
     
-    
-    @PostMapping()
+    // SECURED: Only users with the role 'ADMIN' can create a room
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')") // Protected this endpoint with RBAC
     public ResponseEntity<RoomResponseDTO>createRoom(@Valid @RequestBody RoomRequestDTO request) {
         RoomResponseDTO newRoom = roomService.createRoom(request);
         return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
-
+    // SECURED: Only users with the role 'ADMIN' can update a room
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id,@Valid @RequestBody RoomUpdateRequestDTO request) {
         RoomResponseDTO response = roomService.updateRoom(id, request);
 
