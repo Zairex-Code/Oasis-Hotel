@@ -82,7 +82,7 @@ public class RoomController {
     
     
     @GetMapping("search/price-range/{hotelId}/")
-    public ResponseEntity<Page<RoomResponseDTO>> getMethodName( @PathVariable Long hotelId, 
+    public ResponseEntity<Page<RoomResponseDTO>> getRoomByPriceRange( @PathVariable Long hotelId, 
                                                                 @RequestParam BigDecimal min, 
                                                                 @RequestParam BigDecimal max, 
                                                                 @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {

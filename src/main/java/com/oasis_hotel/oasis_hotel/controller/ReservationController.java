@@ -46,6 +46,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservation ,HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #userId")
     @GetMapping("/user/{userId}")
     public ResponseEntity<Page<ReservationResponseDTO>> getReservationByUserId(@PathVariable Long userId, @PageableDefault(size=10, page=0, sort="createdAt",direction=Direction.DESC) Pageable pageable) {
         Page<ReservationResponseDTO> response = reservationService.getReservationsByUser(userId, pageable);
@@ -73,7 +74,7 @@ public class ReservationController {
 
     @PutMapping("/{id}/cancel")
     public ResponseEntity<ReservationResponseDTO> cancelReservation(@Valid @PathVariable Long id) {
-        //TODO: process PUT request
+    
 
         ReservationResponseDTO response = reservationService.cancelReservation(id);
 

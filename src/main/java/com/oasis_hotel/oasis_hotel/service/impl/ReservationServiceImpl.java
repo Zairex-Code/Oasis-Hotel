@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.reservation.ReservationRequestDTO;
@@ -14,6 +16,7 @@ import com.oasis_hotel.oasis_hotel.entity.Reservation;
 import com.oasis_hotel.oasis_hotel.entity.Room;
 import com.oasis_hotel.oasis_hotel.entity.User;
 import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.Role;
 import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.ReservationMapper;
@@ -81,9 +84,12 @@ public class ReservationServiceImpl implements ReservationService{
 
         Reservation reservation = reservationRepository.findById(id)
                                 .orElseThrow(()->new ResourceNotFoundException("Reservation not found with id: " + id));
+
+        validateReservationOwnership(reservation);
         
         return reservationMapper.toResponse(reservation);
     }
+
     @Override
     public Page<ReservationResponseDTO> getReservationsByUser(Long userId, Pageable pageable) {
         if(!userRepository.existsById(userId)){
@@ -107,6 +113,8 @@ public class ReservationServiceImpl implements ReservationService{
             throw new IllegalStateException("This reservation was already cancelled");
         }
 
+        validateReservationOwnership(reservation);
+
         reservation.setStatus(ReservationStatus.CANCELLED);
 
         Reservation reservationSaved = reservationRepository.save(reservation);
@@ -115,13 +123,34 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Page<ReservationResponseDTO> getReservationByRoomType(RoomType roomType, Pageable pageable) {
-        // TODO get reservation By room type
+    
 
         Page<Reservation> reservation = reservationRepository.findByRoomType(roomType, pageable);
         if (reservation.isEmpty()) {
             throw new ResourceNotFoundException("Reservation not found with type: " + roomType);
         }
         return reservation.map(reservationMapper::toResponse);
+    }
+
+    /**
+     * Security SHIELD (Anti-IDOR Protection)
+     * Validates if the authenticated user from the JWT token is the legitimate owner
+     * of the reservation, or if they hold the "ADMIN" role to manage overarching records
+     * @param Reservation the target reservation entity to evaluate
+     */
+
+    private void validateReservationOwnership(Reservation reservation){
+        // 1. Extract the logged-in user from the active spring security context
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // 2. Evaluate authorization rules: Must be an ADMIN or the exact  reservation owner 
+        boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+        boolean isOwner = reservation.getUser().getId().equals(currentUser.getId());
+
+        // 3. Throw a hard Stop exception if neither condition is met, triggering the Custom 403 JSON response
+        if(!isAdmin && !isOwner){
+            throw new AccessDeniedException("Access Denied: you don't have permission to access or modify this reservation");
+        }
     }
 
 
