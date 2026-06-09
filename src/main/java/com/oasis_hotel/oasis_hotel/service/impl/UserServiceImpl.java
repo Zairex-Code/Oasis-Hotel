@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserRoleRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.User;
@@ -101,6 +102,15 @@ public class UserServiceImpl implements UserService{
             throw new ResourceNotFoundException("Users not found with Role: " + role);
         }
         return user.map(userMapper::toResponse);
+    }
+
+    @Override
+    public UserResponseDTO setUserRole(Long id, UserRoleRequestDTO request) {
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found with id: " + id));
+        user.setRole(request.role());
+        User userSaved = userRepository.save(user);
+        return userMapper.toResponse(userSaved);
+
     }
 
 }

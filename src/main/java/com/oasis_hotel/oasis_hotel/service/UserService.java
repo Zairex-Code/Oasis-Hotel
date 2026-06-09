@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserRoleRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.enums.Role;
@@ -21,6 +22,7 @@ public interface UserService  {
     UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request);
 
 
+    UserResponseDTO setUserRole(Long id, UserRoleRequestDTO request);
     UserResponseDTO setUSerPassword(Long id, UserSetPasswordRequestDTO request);
     
 }

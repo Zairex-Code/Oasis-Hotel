@@ -53,35 +53,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             filterChain.doFilter(request, response);
             return;
         }
+        try{
 
-        // 3. Extract the JWT token (Removing the "Bearer " prefix)
-        jwt = authHeader.substring(7);
-
-        // 4. Extract the username (email) from the token
-        userEmail = jwtService.extractUsername(jwt);
-
-        // 5. If we have an email and the user is not authenticated yet in the current context
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            // Fetch user details from the database
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-            // 6. Validate if the token mathematically
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-
-                // 7. Create the authentication object expected by spring security
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                // add extra details about the request (example , IP address , session ID)
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // 8. Update the security context holder
-                // This tells spring: "This user is fully authenticated and allowed to proceed"
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
+            // 3. Extract the JWT token (Removing the "Bearer " prefix)
+            jwt = authHeader.substring(7);
+    
+            // 4. Extract the username (email) from the token
+            userEmail = jwtService.extractUsername(jwt);
+    
+            // 5. If we have an email and the user is not authenticated yet in the current context
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+    
+                // Fetch user details from the database
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+    
+                // 6. Validate if the token mathematically
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+    
+                    // 7. Create the authentication object expected by spring security
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    
+                    // add extra details about the request (example , IP address , session ID)
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    
+                    // 8. Update the security context holder
+                    // This tells spring: "This user is fully authenticated and allowed to proceed"
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+    
+                }
+                
             }
-            
+        }catch(Exception e){
+            // PRODUCTION GUARD-RAIL: If the token is malformed, expired or fake, we catch the exception.
+            // We intentionally do NOT set the SecurityContext authentication.
+            // This allows the Spring Security filter chain to delegate the failure automatically 
+            // to our CustomAuthenticationEntryPoint, returning a clean corporate 401 JSON.
         }
+
 
         // 9. continue the execution of the request (Pass it to the controller)
         filterChain.doFilter(request, response);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.user.UserRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+import com.oasis_hotel.oasis_hotel.dto.user.UserRoleRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserSetPasswordRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.user.UserUpdateRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.enums.Role;
@@ -92,6 +93,14 @@ public class UserController {
 
         return ResponseEntity.ok(userPasswordUpdated);
         
+    }
+
+    
+    @PutMapping("/set-role/{id}")
+    public ResponseEntity<UserResponseDTO> setUserRole(@PathVariable Long id, @RequestBody UserRoleRequestDTO request) {
+        UserResponseDTO response = userService.setUserRole(id, request);
+        
+        return ResponseEntity.ok(response);
     }
     
 
