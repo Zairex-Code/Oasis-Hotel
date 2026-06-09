@@ -92,7 +92,7 @@ public class RoomServiceImpl implements RoomService{
 
         Page<Room> room = roomRepository.findByRoomType(type, pageable);
         if(room.isEmpty()){
-            throw new ResourceNotFoundException("Room not foundd with type " + type);
+            throw new ResourceNotFoundException("Room not found with type " + type);
         }
         return room.map(roomMapper::toResponse);
     }
@@ -119,6 +119,14 @@ public class RoomServiceImpl implements RoomService{
 
         Room roomUpdated = roomRepository.save(room);
         return roomMapper.toResponse(roomUpdated);
+    }
+
+    @Override
+    public void deleteRoom(Long id) {
+
+        Room room = roomRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Room not found with id: " + id));
+        roomRepository.delete(room);
+        
     }
 
 

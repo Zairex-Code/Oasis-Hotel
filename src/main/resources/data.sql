@@ -124,3 +124,4 @@ INSERT IGNORE INTO rooms (room_number, capacity, price_per_night, room_type, roo
 ('CRI-01', 2, 140.00, 'MATRIMONIAL', 'AVAILABLE', 26, NOW(), NOW()),
 ('PUE-01', 1, 90.00, 'SINGLE', 'AVAILABLE', 27, NOW(), NOW()),
 ('DIA-01', 2, 800.00, 'PRESIDENTIAL', 'AVAILABLE', 28, NOW(), NOW());
+
