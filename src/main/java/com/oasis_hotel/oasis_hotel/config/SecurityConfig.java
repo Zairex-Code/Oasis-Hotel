@@ -24,6 +24,10 @@ public class SecurityConfig {
     // 2. Inject the authentication provider
     private final AuthenticationProvider authenticationProvider;
 
+    // Inject custom security error handlers
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 
     // ==========================================
     // THE SECURITY BRAIN (FILTER CHAIN RULES)
@@ -49,7 +53,13 @@ public class SecurityConfig {
                                                                     // LINK OUR CONFIGURATION TO THE INJECTED PROVIDER AND FILTER
                                                                     .authenticationProvider(authenticationProvider)
                                                                     // we tell spring: "Execute my JWT filter BEFORE your default username/password filter"
-                                                                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                                                                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                                                                            // CAPTURE SECURITY EXCEPTIONS WITH PUR CUSTOM JSON RESPONSES
+                                                                            .exceptionHandling(exception -> exception
+                                                                                    .authenticationEntryPoint(customAuthenticationEntryPoint) // For 401 Unauthorized
+                                                                                    .accessDeniedHandler(customAccessDeniedHandler)           // For 403 Forbidden
+            );
+
                                                             
         return http.build();
     }
