@@ -72,11 +72,8 @@ public class UserController {
         Page<UserResponseDTO> response = userService.getUsersByRole(role, pageable);
         return ResponseEntity.ok(response);
     }
-    
-    
-    
-    
 
+    
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
         UserResponseDTO newUser = userService.createUser(request);

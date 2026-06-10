@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/v1/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+    
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtService jwtService;

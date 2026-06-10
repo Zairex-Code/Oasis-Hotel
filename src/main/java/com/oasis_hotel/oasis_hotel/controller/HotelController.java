@@ -21,22 +21,16 @@ import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.service.HotelService;
 
 import jakarta.validation.Valid;
-
-
-
-
-
-
+import lombok.RequiredArgsConstructor;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/api/hotels")
 public class HotelController {
+
     private final HotelService hotelService;
 
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
-    }
 
     @GetMapping
     public ResponseEntity<Page<HotelResponseDTO>> getAllHotel( @PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
@@ -59,7 +53,7 @@ public class HotelController {
     }
 
     @GetMapping("/search/city")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelBytCity(@RequestParam String city, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByCity(@RequestParam String city, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelByCity(city, pageable);
 
         return ResponseEntity.ok(response);
@@ -73,7 +67,7 @@ public class HotelController {
     }
     
     @GetMapping("search/goodRatedHotels")
-    public ResponseEntity<Page<HotelResponseDTO>> getMethodName(@PageableDefault(size=10,page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelGooRated(@PageableDefault(size=10,page=0, sort="id") Pageable pageable) {
         
         Page<HotelResponseDTO> response = hotelService.getHotelsGoodRated(pageable);
 
