@@ -50,7 +50,7 @@ public class SecurityConfig {
                         // Public Routes (No Token Required)
                         .requestMatchers("/v1/api/auth/**").permitAll()                     //Anyone can attempt to login
                         .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()      //Anyone can Register a new account
-                        .requestMatchers("v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll() // Allow check the documentation to anyone
+                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll() // Allow check the documentation to anyone
                         // Private Routes (EVERYTHING else requires a valid Token)
                         .anyRequest().authenticated())
                                                         // 3. SESSION POLICY (STATELESS)
