@@ -1,5 +1,8 @@
 package com.oasis_hotel.oasis_hotel.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,7 +14,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +42,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
+            .cors(cors -> cors.configurationSource(CorsConfigurationSource())) // Enables CORS bridge for Next.js
             // We disable CSRF protection because we are using JWT tokens , not session cookies
             .csrf(AbstractHttpConfigurer::disable)
             // 2. CONFIGURE ROUTE PERMISSIONS
@@ -44,6 +50,7 @@ public class SecurityConfig {
                         // Public Routes (No Token Required)
                         .requestMatchers("/v1/api/auth/**").permitAll()                     //Anyone can attempt to login
                         .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()      //Anyone can Register a new account
+                        .requestMatchers("v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll() // Allow check the documentation to anyone
                         // Private Routes (EVERYTHING else requires a valid Token)
                         .anyRequest().authenticated())
                                                         // 3. SESSION POLICY (STATELESS)
@@ -64,5 +71,29 @@ public class SecurityConfig {
 
                                                             
         return http.build();
+    }
+
+
+    private CorsConfigurationSource CorsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Allow connection from the future NEXT.JS Frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+
+        // Allow standard HTTP methods
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPINIONS"));
+
+        // Allow essential headers including JWT Authorization
+        configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+
+        // Allow credentials (cookies, authorization headers)
+        configuration.setAllowCredentials(true);
+
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        // Apply this corse rule to all API endpoints
+        source.registerCorsConfiguration("/**", configuration);
+        return  source;
     }
 }
