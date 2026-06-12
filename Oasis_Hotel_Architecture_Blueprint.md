@@ -22,7 +22,7 @@ To guarantee a professional standard ready for corporate environments, the proje
 * **Object Mapping:** **MapStruct 1.5+** for optimized in-memory transfer from Entities to DTOs.
 * **Validation:** **Hibernate Validator (Jakarta Validation)** for data corruption containment at the entry point.
 * **Task Automation:** **Spring Task Scheduling** for asynchronous processes and background Cron Jobs.
-* **Documentation:** **Springdoc OpenAPI v3 (Swagger UI)** for interactive HTTP contract exposure.
+* **Documentation:** **Spring doc OpenAPI v3 (Swagger UI)** for interactive HTTP contract exposure.
 * **Containers:** **Docker & Docker Compose** for database environment consistency.
 
 ---
