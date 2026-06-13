@@ -29,13 +29,6 @@ logging:
     org.springframework.security: DEBUG # Tracks authentication claims, authorization chains, and deep filters to troubleshoot JWT issues locally
     org.hibernate.SQL: DEBUG # Granular trace point capture for object-relational abstraction query performance evaluation
 
-# ... (todo lo que ya tenías de logging y bd arriba) ...
-
-logging:
-  level:
-    org.springframework.security: DEBUG 
-    org.hibernate.SQL: DEBUG
-
 # ===================================================================
 # 🔐 LOCAL DEVELOPMENT SECURITY OVERRIDE
 # Provee una llave estática temporal para que el JwtService local 
