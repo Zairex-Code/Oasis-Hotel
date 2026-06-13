@@ -1,24 +1,27 @@
-spring:
-  datasource:
-    # 🐳 DOCKER NETWORKING: Inside the container, 'localhost' points to the API itself.
-    # We MUST use the service name defined in docker-compose.yml ('db_mysql') to route traffic to the DB container.
-    url: ${DB_URL:jdbc:mysql://db_mysql:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false 
-    properties:
-      hibernate:
-        format_sql: false
+# ===================================================================
+# PRODUCTION PROFILE (Dockerized Cloud / Deployment Infrastructure)
+# Active via Docker container parameters or explicit environment flags
+# ===================================================================
 
-  threads:
-    virtual:
-      enabled: true
+spring:
+    datasource:
+        # NETWORK CORRECTIONS: Changed host target from 'db_mysql' to 'oasis-db' to resolve virtual bridge DNS correctly.
+        # CREDENTIAL CORRECTIONS: Updated backup default value to 'root' to fit the active containerized database setup safely.
+        url: ${DB_URL:jdbc:mysql://oasis-db:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+        username: ${DB_USER:root}
+        password: ${DB_PASSWORD:root}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jpa:
+        hibernate:
+            ddl-auto: validate # CRITICAL PROTECTION LAYER: Halts application boots if entities mismatch schema, forbidding Hibernate from mutating tables or dropping real production data records
+        show-sql: false # Suppresses database queries from production logging channels to preserve CPU overhead and neutralize data leakage hazards
+        properties:
+            hibernate:
+                format_sql: false # Disables formatting overhead in container logging pipelines
+    threads:
+        virtual:
+            enabled: true # Maximizes transactional throughput for heavy cloud loads leveraging minimal heap memory allocation
 
 jwt:
-  # Expects the secret key to be injected via Docker environment variables
-  secret: ${JWT_SECRET_KEY}
+    secret: ${JWT_SECRET_KEY} # Cryptographic signing secret token completely externalized to prevent hardcoded exposure inside version control tracking repositories
