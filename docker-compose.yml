@@ -1,15 +1,41 @@
+# ===================================================================
+# OASIS HOTEL - INFRASTRUCTURE ORCHESTRATION (MOLD PATTERN)
+# Core Deployment Layout defining the isolated container ecosystem.
+# ===================================================================
+
+version: '3.8' # Establishes operational baseline compatibility with modern Docker features
 
 services:
-  oasis-db:
-    image: mysql:8.0
-    container_name: oasis_mysql_server
-    restart: always
+  # --- RELATIONAL DATABASE TIER ---
+  oasis-db: # SERVICE NAME: Acts as the internal DNS host resolution token inside the Docker network topology
+    image: mysql:8.0 # Utilizes the official stable Oracle MySQL 8 container distribution image
+    container_name: oasis_mysql_server # Explicitly names the running container instance for precise CLI targeting
+    restart: always # RECOVERY POLICY: Instructs the engine to automatically resurrect the database on crash or host system reboots
+    
+    # --------------------------------==================================
+    # 🔐 FUTURE DEPLOYMENT UPGRADE PATH: EXTERNALIZED .env INTERACTION
+    # If you decide to adopt an invisible '.env' file layer later to secure 
+    # production credentials from being tracked on GitHub, uncomment the 
+    # lines below and comment out the raw 'environment' block.
+    #
+    # env_file:
+    #   - .env
+    # --------------------------------==================================
+    
     environment:
-      MYSQL_DATABASE: oasis_db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: oasis_db # Programmatically instantiates the relational schema on first engine startup boot
+      MYSQL_ROOT_PASSWORD: root # ROOT CREDENTIAL: Fixed to match application-dev and application-prod URL configs
+      
     ports:
+      # PORT ISOLATION STRATEGY: Maps internal default MySQL port (3306) to host machine port (3308).
+      # This effectively mitigates port collision hazards with any local database instances on the developer's workstation.
       - "3308:3306"
+      
     volumes:
+      # PERSISTENT DATA SHIELD: Binds internal system data storage directory to a named managed volume.
+      # This guarantees that hotel states (records, users, reservations) survive container deletion, rebuilds, or stack upgrades.
       - oasis_mysql_data:/var/lib/mysql
+
 volumes:
+  # Declares the global named database volume allocation reference mapped above
   oasis_mysql_data:
