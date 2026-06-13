@@ -1,35 +1,31 @@
+server:
+    port: 8001 
+
 spring:
     application:
-        name: oasis-hotels-api
-    
-    profiles:
-        active: dev
+        name: oasis-hotels-api 
+
+    web:
+        error:
+            include-message: always 
+
+    jackson:
+        date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX 
+        time-zone: UTC 
+        default-property-inclusion: non-null 
     
 
-    datasource:
-        url: jdbc:mysql://localhost:3308/oasis_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-        username: root
-        password: root
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    servlet:
+        multipart:
+            max-file-size: 10MB
+            max-request-size: 10MB
 
     jpa:
+        open-in-view: false 
         hibernate:
-            ddl-auto: update
-        show-sql: true
-        properties:
-            hibernate:
-                "format_sql": true
-        # 💡 LÍNEA NUEVA: Espera a que Hibernate termine de crear las tablas antes de insertar datos
-        defer-datasource-initialization: true
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        
 
-    # 💡 LÍNEAS NUEVAS: Le dice a Spring que ejecute el archivo data.sql
-    sql:
-        init:
-            mode: always
-    
-    mvc:
-        problemdetails:
-            enabled: true
-
-server:
-    port: 8001
+jwt:
+    expiration: 86400000

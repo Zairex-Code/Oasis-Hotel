@@ -1,9 +1,26 @@
-security:
-    jwt:
+spring:
+  datasource:
+    # Here we use 'localhost' because your IDE is outside the Docker network.
+    # It connects through the mapped port (3308) from your docker-compose.
+    url: jdbc:mysql://localhost:3308/oasis_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: password 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update 
+    show-sql: true 
+    properties:
+      hibernate:
+        format_sql: true 
+        highlight_sql: true 
         
-        # Una llave hexadecimal de 256 bits segura para pruebas locales we could use this command on Linux ( openssl rand -hex 32 )
+  threads:
+    virtual:
+      enabled: true
 
-        secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-
-        # Tiempo de expiración del pasaporte (1 día en milisegundos .)
-        expiration: 86400000
+logging:
+  level:
+    org.springframework.security: DEBUG 
+    org.hibernate.SQL: DEBUG

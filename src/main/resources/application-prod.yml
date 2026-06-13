@@ -1,4 +1,24 @@
-security:
-    jwt:
-        secret-key: ${JWT_SECRET_KEY}
-        expiration: ${JWT_EXPIRATION:86400000}
+spring:
+  datasource:
+    # 🐳 DOCKER NETWORKING: Inside the container, 'localhost' points to the API itself.
+    # We MUST use the service name defined in docker-compose.yml ('db_mysql') to route traffic to the DB container.
+    url: ${DB_URL:jdbc:mysql://db_mysql:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false 
+    properties:
+      hibernate:
+        format_sql: false
+
+  threads:
+    virtual:
+      enabled: true
+
+jwt:
+  # Expects the secret key to be injected via Docker environment variables
+  secret: ${JWT_SECRET_KEY}
