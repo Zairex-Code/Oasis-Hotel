@@ -5,30 +5,34 @@
 
 spring:
   datasource:
+    # Connects directly to the localized Dockerized MySQL infrastructure mapped externally to port 3308
     url: jdbc:mysql://localhost:3308/oasis_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root 
-    password: root 
-    driver-class-name: com.mysql.cj.jdbc.Driver 
+    username: root # Baseline local access credentials
+    password: root # SYNC CORRECTION: Aligned to root password specified inside docker-compose database service env maps
+    driver-class-name: com.mysql.cj.jdbc.Driver # Canonical type driver descriptor for MySQL server interactions
   
   jpa:
     hibernate:
-      ddl-auto: update 
-    show-sql: true 
+      ddl-auto: update # RAD DEVELOPMENT SHIELD: Automatically mutates, creates, or syncs database tables on startup based on Java Entity modifications
+    show-sql: true # Enables logging of executed SQL syntax lines directly into the terminal console for audit tracking
     properties:
       hibernate:
-        format_sql: true 
-        highlight_sql: true 
+        format_sql: true # Beautifies and indents console SQL statements for painless debugging reading
+        highlight_sql: true # Colorizes SQL keywords inside modern ANSI-compatible shell terminals
         
   threads:
     virtual:
-      enabled: true 
+      enabled: true # JAVA 21 CONCURRENCY: Switches Tomcat engine to lightweight Virtual Threads, scaling raw response throughput locally
 
 logging:
   level:
-    org.springframework.security: DEBUG 
-    org.hibernate.SQL: DEBUG
+    org.springframework.security: DEBUG # Tracks authentication claims, authorization chains, and deep filters to troubleshoot JWT issues locally
+    org.hibernate.SQL: DEBUG # Granular trace point capture for object-relational abstraction query performance evaluation
 
-# FIXED: Now matches @Value("${security.jwt.secret-key}") perfectly
+# ===================================================================
+# 🔐 LOCAL DEVELOPMENT SECURITY OVERRIDE
+# Provides a static fallback signing token signature key allowing local microservices boot.
+# ===================================================================
 security:
   jwt:
     secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970

@@ -4,29 +4,33 @@
 # ===================================================================
 
 spring:
-  datasource:
-    # NETWORK CONFIGURATION: Targets 'oasis-db' directly resolving internal container bridge DNS mapping smoothly
-    url: ${DB_URL:jdbc:mysql://oasis-db:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:root}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  
-  jpa:
-    hibernate:
-      ddl-auto: validate # CRITICAL PROTECTION LAYER: Halts application boots if entities mismatch schema, forbidding Hibernate from mutating tables or dropping real production data records
-    show-sql: false # Suppresses database queries from production logging channels to preserve CPU overhead and neutralize data leakage hazards
-    properties:
-      hibernate:
-        format_sql: false
+    datasource:
+        # NETWORK CONFIGURATION: Targets 'oasis-db' directly resolving internal container bridge DNS mapping smoothly
+        url: ${DB_URL:jdbc:mysql://oasis-db:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+        username: ${DB_USER:root}
+        password: ${DB_PASSWORD:root}
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
-  threads:
-    virtual:
-      enabled: true # Maximizes transactional throughput for heavy cloud loads leveraging minimal heap memory allocation
+
+    jpa:
+        hibernate:
+            ddl-auto: validate # CRITICAL PROTECTION LAYER: Halts application boots if entities mismatch schema, forbidding Hibernate from mutating tables or dropping real production data records
+            show-sql: false # Suppresses database queries from production logging channels to preserve CPU overhead and neutralize data leakage hazards
+        properties:
+            hibernate:
+                format_sql: true # Beautifies and indents console SQL statements for painless debugging reading
+                highlight_sql: true # Colorizes SQL keywords inside modern ANSI-compatible shell terminals
+
+    threads:
+        virtual:
+            enabled: true # Maximizes transactional throughput for heavy cloud loads leveraging minimal heap memory allocation
+
+
 
 # ===================================================================
 # 🔐 SECURE HOISTED ENVIRONMENT SECRET KEYS
 # Fully externalized token payload secret key signature to reject hardcoded repo exposure.
 # ===================================================================
 security:
-  jwt:
-    secret-key: ${JWT_SECRET_KEY}
+    jwt:
+        secret-key: ${JWT_SECRET_KEY}
