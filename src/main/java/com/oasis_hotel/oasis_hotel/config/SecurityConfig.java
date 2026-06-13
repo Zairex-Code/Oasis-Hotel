@@ -51,6 +51,9 @@ public class SecurityConfig {
                         .requestMatchers("/v1/api/auth/**").permitAll()                     //Anyone can attempt to login
                         .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()      //Anyone can Register a new account
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll() // Allow check the documentation to anyone
+                        // Allows unauthenticated guests to search hotels and rooms on the homepage
+                        .requestMatchers(HttpMethod.GET, "/v1/api/hotels/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/api/rooms/**").permitAll()
                         // Private Routes (EVERYTHING else requires a valid Token)
                         .anyRequest().authenticated())
                                                         // 3. SESSION POLICY (STATELESS)
