@@ -4,24 +4,29 @@
 # ===================================================================
 
 spring:
-    datasource:
-        # NETWORK CORRECTIONS: Changed host target from 'db_mysql' to 'oasis-db' to resolve virtual bridge DNS correctly.
-        # CREDENTIAL CORRECTIONS: Updated backup default value to 'root' to fit the active containerized database setup safely.
-        url: ${DB_URL:jdbc:mysql://oasis-db:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-        username: ${DB_USER:root}
-        password: ${DB_PASSWORD:root}
-        driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    # NETWORK CONFIGURATION: Targets 'oasis-db' directly resolving internal container bridge DNS mapping smoothly
+    url: ${DB_URL:jdbc:mysql://oasis-db:3306/oasis_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate # CRITICAL PROTECTION LAYER: Halts application boots if entities mismatch schema, forbidding Hibernate from mutating tables or dropping real production data records
+    show-sql: false # Suppresses database queries from production logging channels to preserve CPU overhead and neutralize data leakage hazards
+    properties:
+      hibernate:
+        format_sql: false
 
-    jpa:
-        hibernate:
-            ddl-auto: validate # CRITICAL PROTECTION LAYER: Halts application boots if entities mismatch schema, forbidding Hibernate from mutating tables or dropping real production data records
-        show-sql: false # Suppresses database queries from production logging channels to preserve CPU overhead and neutralize data leakage hazards
-        properties:
-            hibernate:
-                format_sql: false # Disables formatting overhead in container logging pipelines
-    threads:
-        virtual:
-            enabled: true # Maximizes transactional throughput for heavy cloud loads leveraging minimal heap memory allocation
+  threads:
+    virtual:
+      enabled: true # Maximizes transactional throughput for heavy cloud loads leveraging minimal heap memory allocation
 
-jwt:
-    secret: ${JWT_SECRET_KEY} # Cryptographic signing secret token completely externalized to prevent hardcoded exposure inside version control tracking repositories
+# ===================================================================
+# 🔐 SECURE HOISTED ENVIRONMENT SECRET KEYS
+# Fully externalized token payload secret key signature to reject hardcoded repo exposure.
+# ===================================================================
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}

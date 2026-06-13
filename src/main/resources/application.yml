@@ -4,33 +4,36 @@
 # ===================================================================
 
 server:
-    port: 8001 # Dedicated network port for backend routing, consumed consistently by Next.js API calls
+  port: 8001 # Dedicated network port for backend routing, consumed consistently by Next.js API calls
 
 spring:
-    application:
-        name: oasis-hotels-api # Application context identifier utilized across the system topology
-    profiles:
-        active: dev
+  application:
+    name: oasis-hotels-api # Application context identifier utilized across the system topology
+  profiles:
+    active: dev # ENV RUNTIME INTERCEPTOR: Forces Spring Boot to load application-dev.yml by default on local machines
 
-    web:
-        error:
-            include-message: always # Allows ProblemDetail RFC 7807 responses to populate descriptive validation and error text safely
+  web:
+    error:
+      include-message: always # Allows ProblemDetail RFC 7807 responses to populate descriptive validation and error text safely
 
-    jackson:
-        date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX # Standardizes timestamps to ISO 8601 string format for straightforward frontend parsing
-        time-zone: UTC # Forces server timezone synchronization to UTC, neutralizing local runtime offset anomalies
-        default-property-inclusion: non-null # Network Optimization: Excludes empty/null values from JSON responses, stripping payload size and easing Next.js state binding
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX # Standardizes timestamps to ISO 8601 string format for straightforward frontend parsing
+    time-zone: UTC # Forces server timezone synchronization to UTC, neutralizing local runtime offset anomalies
+    default-property-inclusion: non-null # Network Optimization: Excludes empty/null values from JSON responses, stripping payload size and easing Next.js state binding
     
-    servlet:
-        multipart:
-            max-file-size: 10MB # Establishes individual request size ceiling for incoming files (e.g., future room or hotel images)
-            max-request-size: 10MB # Establishes total multi-part request block size ceiling per transaction
+  servlet:
+    multipart:
+      max-file-size: 10MB # Establishes individual request size ceiling for incoming files (e.g., future room or hotel images)
+      max-request-size: 10MB # Establishes total multi-part request block size ceiling per transaction
 
-    jpa:
-        open-in-view: false # ANTI-PATTERN SHIELD: Immediately releases DB connection to pool after service execution, preventing thread/pool starvation under high concurrent load
-    hibernate:
-        naming:
-            physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # Standardizes camelCase entities to database snake_case tables/columns mapping explicitly
+  jpa:
+    open-in-view: false # ANTI-PATTERN SHIELD: Immediately releases DB connection to pool after service execution, preventing thread/pool starvation under high concurrent load
+    
+  hibernate:
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # Standardizes camelCase entities to database snake_case tables/columns mapping explicitly
 
-jwt:
-    expiration: 86400000 # Default authorization token lifespan baseline set to 24 Hours (expressed in milliseconds)
+# FIXED: Now matches @Value("${security.jwt.expiration}") perfectly
+security:
+  jwt:
+    expiration: 86400000

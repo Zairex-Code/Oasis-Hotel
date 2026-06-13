@@ -5,34 +5,30 @@
 
 spring:
   datasource:
-    # Connects directly to the localized Dockerized MySQL infrastructure mapped externally to port 3308
     url: jdbc:mysql://localhost:3308/oasis_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root # Baseline local access credentials
-    password: root # SINC CORRECTION: Shifted from 'password' to 'root' to align with the mapped Docker environment credentials
-    driver-class-name: com.mysql.cj.jdbc.Driver # Canonical type driver descriptor for MySQL server interactions
+    username: root 
+    password: root 
+    driver-class-name: com.mysql.cj.jdbc.Driver 
   
   jpa:
     hibernate:
-      ddl-auto: update # RAD DEVELOPMENT SHIELD: Automatically mutates, creates, or syncs database tables on startup based on Java Entity modifications
-    show-sql: true # Enables logging of executed SQL syntax lines directly into the terminal console for audit tracking
+      ddl-auto: update 
+    show-sql: true 
     properties:
       hibernate:
-        format_sql: true # Beautifies and indents console SQL statements for painless debugging reading
-        highlight_sql: true # Colorizes SQL keywords inside modern ANSI-compatible shell terminals
+        format_sql: true 
+        highlight_sql: true 
         
   threads:
     virtual:
-      enabled: true # JAVA 21 CONCURRENCY: Switches Tomcat engine to lightweight Virtual Threads, scaling raw response throughput locally
+      enabled: true 
 
 logging:
   level:
-    org.springframework.security: DEBUG # Tracks authentication claims, authorization chains, and deep filters to troubleshoot JWT issues locally
-    org.hibernate.SQL: DEBUG # Granular trace point capture for object-relational abstraction query performance evaluation
+    org.springframework.security: DEBUG 
+    org.hibernate.SQL: DEBUG
 
-# ===================================================================
-# 🔐 LOCAL DEVELOPMENT SECURITY OVERRIDE
-# Provee una llave estática temporal para que el JwtService local 
-# pueda arrancar. En producción, esto es ignorado y sobrescrito.
-# ===================================================================
-jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+# FIXED: Now matches @Value("${security.jwt.secret-key}") perfectly
+security:
+  jwt:
+    secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
