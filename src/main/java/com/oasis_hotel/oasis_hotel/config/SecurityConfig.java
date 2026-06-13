@@ -81,10 +81,14 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
 
         // Allow standard HTTP methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPINIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH","DELETE","OPTIONS"));
 
         // Allow essential headers including JWT Authorization
-        configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList(  "Authorization",
+                                                        "Content-Type",
+                                                        "Accept", 
+                                                        "X-Requested-With", 
+                                                        "Cache-Control"));
 
         // Allow credentials (cookies, authorization headers)
         configuration.setAllowCredentials(true);
