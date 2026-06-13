@@ -1,28 +1,29 @@
--- ==========================================
--- 1. POBLAR USUARIOS (20 Filas)
--- Roles: 2 ADMIN, 3 HOTEL_MANAGER, 15 CUSTOMER
--- ==========================================
+-- ===================================================================
+-- 1. SEEDING USERS (20 Rows)
+-- Passwords have been securely hashed using BCrypt to support authentication provider verification.
+-- ALL SEED USERS CAPITALIZE THE SAME ACCESS PASSWORD: password123
+-- ===================================================================
 INSERT IGNORE INTO users (first_name, last_name, email, password, role, created_at, updated_at) VALUES
-('Admin', 'Supremo', 'admin@oasishotels.com', 'admin123', 'ADMIN', NOW(), NOW()),
-('Root', 'System', 'root@oasishotels.com', 'admin123', 'ADMIN', NOW(), NOW()),
-('Roberto', 'Gómez', 'roberto.gerente@oasishotels.com', 'manager123', 'HOTEL_MANAGER', NOW(), NOW()),
-('Alicia', 'Vargas', 'alicia.gerente@oasishotels.com', 'manager123', 'HOTEL_MANAGER', NOW(), NOW()),
-('Fernando', 'Ruiz', 'fernando.gerente@oasishotels.com', 'manager123', 'HOTEL_MANAGER', NOW(), NOW()),
-('Laura', 'Martínez', 'laura.cliente@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Carlos', 'López', 'carlos.lopez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('María', 'González', 'maria.gonzalez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Juan', 'Pérez', 'juan.perez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Ana', 'García', 'ana.garcia@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Luis', 'Fernández', 'luis.fernandez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Carmen', 'Sánchez', 'carmen.sanchez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Jorge', 'Ramírez', 'jorge.ramirez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Sofía', 'Torres', 'sofia.torres@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Diego', 'Flores', 'diego.flores@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Lucía', 'Rivera', 'lucia.rivera@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Miguel', 'Gómez', 'miguel.gomez@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Elena', 'Díaz', 'elena.diaz@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Pedro', 'Morales', 'pedro.morales@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW()),
-('Paula', 'Ortiz', 'paula.ortiz@email.com', 'cliente123', 'CUSTOMER', NOW(), NOW());
+('Admin', 'Supremo', 'admin@oasishotels.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'ADMIN', NOW(), NOW()),
+('Root', 'System', 'root@oasishotels.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'ADMIN', NOW(), NOW()),
+('Roberto', 'Gómez', 'roberto.gerente@oasishotels.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'HOTEL_MANAGER', NOW(), NOW()),
+('Alicia', 'Vargas', 'alicia.gerente@oasishotels.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'HOTEL_MANAGER', NOW(), NOW()),
+('Fernando', 'Ruiz', 'fernando.gerente@oasishotels.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'HOTEL_MANAGER', NOW(), NOW()),
+('Laura', 'Martínez', 'laura.cliente@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Carlos', 'López', 'carlos.lopez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('María', 'González', 'maria.gonzalez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Juan', 'Pérez', 'juan.perez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Ana', 'García', 'ana.garcia@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Luis', 'Fernández', 'luis.fernandez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Carmen', 'Sánchez', 'carmen.sanchez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Jorge', 'Ramírez', 'jorge.ramirez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Sofía', 'Torres', 'sofia.torres@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Diego', 'Flores', 'diego.flores@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Lucía', 'Rivera', 'lucia.rivera@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Miguel', 'Gómez', 'miguel.gomez@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Elena', 'Díaz', 'elena.diaz@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Pedro', 'Morales', 'pedro.morales@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW()),
+('Paula', 'Ortiz', 'paula.ortiz@email.com', '$2a$10$gBcaI0pQG38HmWvC0.WkX.9Wb/K0XgL6/W0o8gZ6hI.fU.H7a4r2K', 'CUSTOMER', NOW(), NOW());
 
 
 -- ==========================================
