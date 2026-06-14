@@ -20,8 +20,9 @@ public record HotelRequestDTO(
 
     @Min(value = 1, message = "Stars must be at least 1")
     @Max(value = 5, message = "Stars cannot be more than 5")
-    Integer stars
+    Integer stars,
 
+    String imageUrl
 ) {
     
 }

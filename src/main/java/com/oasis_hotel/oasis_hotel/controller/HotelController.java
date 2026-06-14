@@ -92,10 +92,6 @@ public class HotelController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * 🌐 REAL-TIME COMBINED SEARCH ENDPOINT
-     * Consumes multiple query matrix options securely from Next.js state inputs.
-     */
     @GetMapping("/search")
     public ResponseEntity<Page<HotelResponseDTO>> searchAvailableHotels(
             @RequestParam(required = false) String city,

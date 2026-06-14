@@ -13,7 +13,7 @@ spring:
   
   jpa:
     hibernate:
-      ddl-auto: update # RAD DEVELOPMENT SHIELD: Automatically mutates, creates, or syncs database tables on startup based on Java Entity modifications
+      ddl-auto: create # RAD DEVELOPMENT SHIELD: Automatically mutates, creates, or syncs database tables on startup based on Java Entity modifications
     show-sql: true # Enables logging of executed SQL syntax lines directly into the terminal console for audit tracking
     properties:
       hibernate:

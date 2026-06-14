@@ -8,7 +8,8 @@ public record HotelResponseDTO(
     String address,
     String city,
     Integer stars,
-    HotelStatus status
+    HotelStatus status,
+    String imageUrl
 ) {
     
 }
