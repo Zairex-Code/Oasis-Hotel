@@ -1,8 +1,12 @@
 package com.oasis_hotel.oasis_hotel.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -85,6 +89,24 @@ public class HotelController {
     @GetMapping("search/recently-released")
     public ResponseEntity<Page<HotelResponseDTO>> getRecentlyReleasedHotel(@PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelRecentlyReleased(pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 🌐 REAL-TIME COMBINED SEARCH ENDPOINT
+     * Consumes multiple query matrix options securely from Next.js state inputs.
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Page<HotelResponseDTO>> searchAvailableHotels(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer guests,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
+            @PageableDefault(size = 10, page = 0, sort = "stars", direction = Direction.DESC) Pageable pageable) {
+        
+        // Technical note: You will need to declare 'searchAvailableHotels' inside HotelService 
+        // and implement it inside HotelServiceImpl to invoke the newly created repository query.
+        Page<HotelResponseDTO> response = hotelService.searchAvailableHotels(city, guests, checkInDate, checkOutDate, pageable);
         return ResponseEntity.ok(response);
     }
     
