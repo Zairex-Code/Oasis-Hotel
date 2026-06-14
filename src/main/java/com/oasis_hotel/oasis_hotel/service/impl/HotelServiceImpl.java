@@ -1,6 +1,7 @@
 package com.oasis_hotel.oasis_hotel.service.impl;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
@@ -11,12 +12,15 @@ import com.oasis_hotel.oasis_hotel.dto.hotel.HotelRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelResponseDTO;
 import com.oasis_hotel.oasis_hotel.dto.hotel.HotelSetStatusRequestDTO;
 import com.oasis_hotel.oasis_hotel.entity.Hotel;
+import com.oasis_hotel.oasis_hotel.entity.enums.ReservationStatus;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomStatus;
 import com.oasis_hotel.oasis_hotel.exception.ResourceNotFoundException;
 import com.oasis_hotel.oasis_hotel.mapper.HotelMapper;
 import com.oasis_hotel.oasis_hotel.repository.HotelRepository;
 import com.oasis_hotel.oasis_hotel.service.HotelService;
 
 import jakarta.transaction.Transactional;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 
 
@@ -159,6 +163,44 @@ public class HotelServiceImpl implements HotelService{
         Hotel hotelUpdated = hotelRepository.save(hotel);
 
         return hotelMapper.toResponse(hotelUpdated);
+    }
+
+
+
+    @Override
+    public Page<HotelResponseDTO> searchAvailableHotels(String city, Integer guests, LocalDate checkInDate, LocalDate checkOutDate, Pageable pageable) {
+        
+        // 1. DEFENSIVE TEMPORAL VALIDATIONS
+        // Prevents frontend logical bypasses (e.g., checkout before checkin or booking in the past)
+        if (checkInDate != null && checkOutDate != null && !checkInDate.isBefore(checkOutDate)) {
+            throw new IllegalArgumentException("La fecha de entrada debe ser estrictamente anterior a la fecha de salida.");
+        }
+        if (checkInDate != null && checkInDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de reserva no puede estar en el pasado.");
+        }
+
+        // 2. SMART FALLBACKS FOR OPTIONAL QUERY PARAMETERS
+        // Sanitizes inputs and assigns coherent defaults if Next.js submits empty search fields
+        String searchCity = (city != null && !city.trim().isEmpty()) ? city.trim() : null;
+        int targetGuests = (guests != null && guests > 0) ? guests : 1;
+        LocalDate targetCheckIn = (checkInDate != null) ? checkInDate: LocalDate.now();
+        LocalDate targetCheckOut = (checkOutDate != null) ? checkOutDate: LocalDate.now();
+
+        // 3. EXECUTE ADVANCE AVAILABILITY MATRIX ALGORITHM
+        //We pass RoomStatus.AVAILABLE and ReservationStatus.CANCELLED cleanly as Java parameters
+        Page<Hotel> hotels = hotelRepository.findAvailableHotels(
+                                                                searchCity, 
+                                                                targetGuests, 
+                                                                targetCheckIn, 
+                                                                targetCheckOut, 
+                                                                RoomStatus.AVAILABLE, 
+                                                                ReservationStatus.CANCELLED, 
+                                                                pageable);
+                                                                
+        if(hotels.isEmpty()){
+            throw new ResourceNotFoundException("Available Hotels not found");
+        }
+        return hotels.map(hotelMapper::toResponse);
     }
 
 

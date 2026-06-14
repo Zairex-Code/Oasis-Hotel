@@ -2,6 +2,8 @@ package com.oasis_hotel.oasis_hotel.service;
 
 
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,6 +23,7 @@ public interface HotelService{
     Page<HotelResponseDTO>getHotelRecentlyReleased(Pageable pageable);
     HotelResponseDTO updateHotel(Long id, HotelRequestDTO request);
     HotelResponseDTO setHotelStatus(Long id, HotelSetStatusRequestDTO request);
+    Page<HotelResponseDTO> searchAvailableHotels(String city, Integer guests, LocalDate checkInDate, LocalDate checkOutDate, Pageable pageable);
     
 
 }
