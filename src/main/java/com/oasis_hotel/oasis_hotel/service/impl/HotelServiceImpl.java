@@ -171,7 +171,7 @@ public class HotelServiceImpl implements HotelService{
     public Page<HotelResponseDTO> searchAvailableHotels(String city, Integer guests, LocalDate checkInDate, LocalDate checkOutDate, Pageable pageable) {
         
         // 1. DEFENSIVE TEMPORAL VALIDATIONS
-        // Prevents frontend logical bypasses (e.g., checkout before checkin or booking in the past)
+        // Prevents frontend logical bypasses (e.g., checkout before check-in or booking in the past)
         if (checkInDate != null && checkOutDate != null && !checkInDate.isBefore(checkOutDate)) {
             throw new IllegalArgumentException("La fecha de entrada debe ser estrictamente anterior a la fecha de salida.");
         }
@@ -196,10 +196,11 @@ public class HotelServiceImpl implements HotelService{
                                                                 RoomStatus.AVAILABLE, 
                                                                 ReservationStatus.CANCELLED, 
                                                                 pageable);
-                                                                
+        
         if(hotels.isEmpty()){
-            throw new ResourceNotFoundException("Available Hotels not found");
+            throw new ResourceNotFoundException("Available Hotels not found ");
         }
+        
         return hotels.map(hotelMapper::toResponse);
     }
 
