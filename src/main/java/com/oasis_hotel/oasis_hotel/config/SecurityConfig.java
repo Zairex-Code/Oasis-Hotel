@@ -3,6 +3,7 @@ package com.oasis_hotel.oasis_hotel.config;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,81 +27,103 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // 1. We inject the custom JWT FILTER (Our "Bouncer")
+    // ==========================================
+    // 1. DEPENDENCY INJECTION
+    // ==========================================
     private final JwtAuthenticationFilter jwtAuthFilter;
-    // 2. Inject the authentication provider
     private final AuthenticationProvider authenticationProvider;
-
-    // Inject custom security error handlers
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    // ==========================================
+    // 2. DYNAMIC ENVIRONMENT PROPERTIES
+    // ==========================================
+    // Reads allowed origins from the active application.yml file (e.g., dev or prod).
+    // This ensures the application is secure in production but flexible in development.
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
+
 
     // ==========================================
-    // THE SECURITY BRAIN (FILTER CHAIN RULES)
+    // 3. MAIN SECURITY FILTER CHAIN (SPRING BOOT 4 / SECURITY 7)
     // ==========================================
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(CorsConfigurationSource())) // Enables CORS bridge for Next.js
-            // We disable CSRF protection because we are using JWT tokens , not session cookies
+            // Attach the strict CORS configuration defined as a Bean below
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            
+            // Disable CSRF because we use stateless JWT tokens instead of session cookies
             .csrf(AbstractHttpConfigurer::disable)
-            // 2. CONFIGURE ROUTE PERMISSIONS
+            
+            // Route Authorization Rules
             .authorizeHttpRequests(auth -> auth
-                        // Public Routes (No Token Required)
-                        .requestMatchers("/v1/api/auth/**").permitAll()                     //Anyone can attempt to login
-                        .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()      //Anyone can Register a new account
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html").permitAll() // Allow check the documentation to anyone
-                        // Allows unauthenticated guests to search hotels and rooms on the homepage
-                        .requestMatchers(HttpMethod.GET, "/v1/api/hotels/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/v1/api/rooms/**").permitAll()
-                        // Private Routes (EVERYTHING else requires a valid Token)
-                        .anyRequest().authenticated())
-                                                        // 3. SESSION POLICY (STATELESS)
-                                                        // We tell Spring: "Do not save the user's session in memory
-                                                        // Every single requests is independent and must bring it own token"
-                                                        .sessionManagement(session -> session
-                                                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                                                    // 4. POSITION OUR CUSTOM JWT GUARD
-                                                                    // LINK OUR CONFIGURATION TO THE INJECTED PROVIDER AND FILTER
-                                                                    .authenticationProvider(authenticationProvider)
-                                                                    // we tell spring: "Execute my JWT filter BEFORE your default username/password filter"
-                                                                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                                                                            // CAPTURE SECURITY EXCEPTIONS WITH PUR CUSTOM JSON RESPONSES
-                                                                            .exceptionHandling(exception -> exception
-                                                                                    .authenticationEntryPoint(customAuthenticationEntryPoint) // For 401 Unauthorized
-                                                                                    .accessDeniedHandler(customAccessDeniedHandler)           // For 403 Forbidden
+                // Public Authentication & Registration endpoints
+                .requestMatchers("/v1/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()
+                
+                // Public Swagger UI & OpenAPI Documentation
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                
+                // Public Domain Exploration (Hotels & Rooms)
+                // Matches both exact root paths and their nested sub-paths
+                .requestMatchers(HttpMethod.GET, "/v1/api/hotels", "/v1/api/hotels/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/v1/api/rooms", "/v1/api/rooms/**").permitAll()
+                
+                // All other requests require a valid JWT Token
+                .anyRequest().authenticated()
+            )
+            
+            // Session Policy: Make it completely stateless
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            
+            // Register Authentication Provider and insert Custom JWT Filter
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            
+            // Custom Exception Handling for 401 Unauthorized and 403 Forbidden
+            .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler)
             );
 
-                                                            
         return http.build();
     }
 
 
-    private CorsConfigurationSource CorsConfigurationSource() {
+    // ==========================================
+    // 4. GLOBAL CORS CONFIGURATION BEAN
+    // ==========================================
+    // Explicitly defined as a Bean to intercept preflight (OPTIONS) requests early
+    // in the Spring Security 7 filter chain.
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allow connection from the future NEXT.JS Frontend
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        // Inject the allowed origins dynamically from the application YAML files
+        configuration.setAllowedOriginPatterns(allowedOrigins);
 
-        // Allow standard HTTP methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH","DELETE","OPTIONS"));
+        // Allow standard REST HTTP methods
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
-        // Allow essential headers including JWT Authorization
-        configuration.setAllowedHeaders(Arrays.asList(  "Authorization",
-                                                        "Content-Type",
-                                                        "Accept", 
-                                                        "X-Requested-With", 
-                                                        "Cache-Control"));
+        // Allow essential headers for JWT transport and standard REST requests
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "Accept", 
+            "X-Requested-With", 
+            "Cache-Control"
+        ));
 
-        // Allow credentials (cookies, authorization headers)
+        // Allow credentials (necessary for JWT Authorization headers)
         configuration.setAllowCredentials(true);
 
-
+        // Apply this configuration to all API endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        // Apply this corse rule to all API endpoints
         source.registerCorsConfiguration("/**", configuration);
-        return  source;
+        
+        return source;
     }
 }

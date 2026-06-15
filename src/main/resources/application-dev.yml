@@ -11,17 +11,17 @@ spring:
     password: root # SYNC CORRECTION: Aligned to root password specified inside docker-compose database service env maps
     driver-class-name: com.mysql.cj.jdbc.Driver # Canonical type driver descriptor for MySQL server interactions
   
-  # 🔥 ACTIVADOR ALWAY-ON: Obliga a Spring Boot a procesar scripts SQL en bases de datos externas (MySQL)
+  # 🔥 ACTIVADOR ALWAYS-ON: Forces Spring Boot to process SQL scripts on external databases (MySQL)
   sql:
     init:
       mode: always
 
   jpa:
-    # ⏳ RETRASO DE INICIALIZACIÓN: Espera a que Hibernate cree las tablas ANTES de inyectar el data.sql
+    # ⏳ INITIALIZATION DEFERRAL: Waits for Hibernate to create tables BEFORE injecting data.sql
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update # RAD DEVELOPMENT SHIELD: Destruye y recrea las tablas limpias en cada reinicio
-    show-sql: true # Enables logging of executed SQL syntax lines directly into the terminal console for audit tracking
+      ddl-auto: update # RAD DEVELOPMENT SHIELD: Automatically mutates or syncs database tables on startup
+    show-sql: true # Enables logging of executed SQL syntax lines directly into the terminal console
     properties:
       hibernate:
         format_sql: true # Beautifies and indents console SQL statements for painless debugging reading
@@ -29,17 +29,26 @@ spring:
         
   threads:
     virtual:
-      enabled: true # JAVA 21 CONCURRENCY: Switches Tomcat engine to lightweight Virtual Threads, scaling raw response throughput locally
+      enabled: true # JAVA 21 CONCURRENCY: Switches Tomcat engine to lightweight Virtual Threads
 
 logging:
   level:
-    org.springframework.security: DEBUG # Tracks authentication claims, authorization chains, and deep filters to troubleshoot JWT issues locally
-    org.hibernate.SQL: DEBUG # Granular trace point capture for object-relational abstraction query performance evaluation
+    org.springframework.security: DEBUG # Tracks authentication claims and deep authorization filters locally
+    org.hibernate.SQL: DEBUG # Granular trace point capture for object-relational query performance evaluation
 
 # ===================================================================
 # 🔐 LOCAL DEVELOPMENT SECURITY OVERRIDE
-# Provides a static fallback signing token signature key allowing local microservices boot.
+# Provides a static fallback signing token signature key allowing local boot.
 # ===================================================================
 security:
   jwt:
     secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
+# ===================================================================
+# 🌐 GLOBAL NETWORKING & INFRASTRUCTURE PARAMETERS
+# Custom app configurations parsed dynamically by Java enterprise components.
+# ===================================================================
+app:
+  cors:
+    allowed-origins:
+      - "*" # 🚀 FIXED PLACEHOLDER: Dynamically resolves the @Value injection for Spring Security 7
