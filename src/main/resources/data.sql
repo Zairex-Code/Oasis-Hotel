@@ -66,62 +66,68 @@ INSERT IGNORE INTO hotels (id, name, address, city, stars_rating, status, image_
 (34, 'Oasis Termal', 'Aguas Termales', 'Hidalgo', 4, 'ACTIVE', 'https://images.unsplash.com/photo-1560319080-b046160eb88c?q=80&w=800&auto=format&fit=crop', NOW(), NOW()),
 (35, 'Oasis Gran Lujo', 'Punta Mita', 'Nayarit', 5, 'ACTIVE', 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=800&auto=format&fit=crop', NOW(), NOW());
 
-
--- ==========================================
--- 3. POBLAR HABITACIONES (Múltiples Filas)
--- ==========================================
-INSERT IGNORE INTO rooms (room_number, capacity, price_per_night, room_type, room_status, hotel_id, created_at, updated_at) VALUES
--- Hotel 1 a 5
-('101A', 2, 150.00, 'DOUBLE', 'AVAILABLE', 1, NOW(), NOW()),
-('102B', 4, 300.50, 'SUITE', 'AVAILABLE', 1, NOW(), NOW()),
-('201A', 2, 850.00, 'PRESIDENTIAL', 'AVAILABLE', 1, NOW(), NOW()),
-('202B', 2, 150.00, 'DOUBLE', 'OCCUPIED', 1, NOW(), NOW()),
-('101', 1, 90.00, 'SINGLE', 'AVAILABLE', 2, NOW(), NOW()),
-('102', 2, 120.00, 'DOUBLE', 'MAINTENANCE', 2, NOW(), NOW()),
-('103', 1, 90.00, 'SINGLE', 'AVAILABLE', 2, NOW(), NOW()),
-('PENTHOUSE', 4, 500.00, 'SUITE', 'AVAILABLE', 2, NOW(), NOW()),
-('CAB-01', 2, 200.00, 'MATRIMONIAL', 'AVAILABLE', 3, NOW(), NOW()),
-('CAB-02', 4, 250.00, 'SUITE', 'AVAILABLE', 3, NOW(), NOW()),
-('CAB-03', 2, 200.00, 'MATRIMONIAL', 'OCCUPIED', 3, NOW(), NOW()),
-('CAB-04', 6, 350.00, 'SUITE', 'MAINTENANCE', 3, NOW(), NOW()),
-('VIEW-1', 2, 180.00, 'MATRIMONIAL', 'AVAILABLE', 4, NOW(), NOW()),
-('VIEW-2', 2, 180.00, 'MATRIMONIAL', 'AVAILABLE', 4, NOW(), NOW()),
-('VIEW-3', 4, 280.00, 'DOUBLE', 'OCCUPIED', 4, NOW(), NOW()),
-('OCEAN-1', 2, 400.00, 'SUITE', 'AVAILABLE', 4, NOW(), NOW()),
-('COL-101', 1, 100.00, 'SINGLE', 'AVAILABLE', 5, NOW(), NOW()),
-('COL-102', 2, 130.00, 'DOUBLE', 'AVAILABLE', 5, NOW(), NOW()),
-('COL-201', 2, 150.00, 'MATRIMONIAL', 'AVAILABLE', 5, NOW(), NOW()),
-('KING-01', 2, 600.00, 'PRESIDENTIAL', 'OUT_OF_SERVICE', 5, NOW(), NOW()),
-
--- Hotel 6 al 30 (Nuevas Habitaciones)
-('TUL-01', 2, 450.00, 'MATRIMONIAL', 'AVAILABLE', 6, NOW(), NOW()),
-('TUL-02', 4, 800.00, 'PRESIDENTIAL', 'OCCUPIED', 6, NOW(), NOW()),
-('AERO-10', 1, 80.00, 'SINGLE', 'AVAILABLE', 7, NOW(), NOW()),
-('AERO-11', 2, 110.00, 'DOUBLE', 'AVAILABLE', 7, NOW(), NOW()),
-('QRO-101', 2, 150.00, 'DOUBLE', 'MAINTENANCE', 8, NOW(), NOW()),
-('QRO-102', 2, 180.00, 'MATRIMONIAL', 'AVAILABLE', 8, NOW(), NOW()),
-('ECO-01', 4, 200.00, 'SUITE', 'AVAILABLE', 9, NOW(), NOW()),
-('ECO-02', 2, 120.00, 'DOUBLE', 'AVAILABLE', 9, NOW(), NOW()),
-('GDL-P1', 2, 600.00, 'PRESIDENTIAL', 'AVAILABLE', 10, NOW(), NOW()),
-('GDL-P2', 4, 350.00, 'SUITE', 'OCCUPIED', 10, NOW(), NOW()),
-('MAZ-101', 2, 90.00, 'DOUBLE', 'AVAILABLE', 11, NOW(), NOW()),
-('MAZ-102', 4, 150.00, 'SUITE', 'AVAILABLE', 11, NOW(), NOW()),
-('VINO-01', 2, 400.00, 'MATRIMONIAL', 'AVAILABLE', 12, NOW(), NOW()),
-('VINO-02', 2, 400.00, 'MATRIMONIAL', 'OCCUPIED', 12, NOW(), NOW()),
-('MER-100', 2, 140.00, 'DOUBLE', 'AVAILABLE', 13, NOW(), NOW()),
-('GTO-01', 2, 130.00, 'MATRIMONIAL', 'AVAILABLE', 14, NOW(), NOW()),
-('JUA-01', 1, 70.00, 'SINGLE', 'AVAILABLE', 15, NOW(), NOW()),
-('CHI-01', 4, 500.00, 'SUITE', 'AVAILABLE', 16, NOW(), NOW()),
-('SURF-1', 2, 100.00, 'DOUBLE', 'OCCUPIED', 17, NOW(), NOW()),
-('CDMX-1', 2, 700.00, 'PRESIDENTIAL', 'AVAILABLE', 18, NOW(), NOW()),
-('COY-01', 2, 160.00, 'MATRIMONIAL', 'AVAILABLE', 19, NOW(), NOW()),
-('CABO-1', 4, 900.00, 'SUITE', 'AVAILABLE', 20, NOW(), NOW()),
-('VER-01', 2, 95.00, 'DOUBLE', 'AVAILABLE', 21, NOW(), NOW()),
-('HUA-01', 4, 180.00, 'SUITE', 'AVAILABLE', 22, NOW(), NOW()),
-('SAL-01', 1, 85.00, 'SINGLE', 'AVAILABLE', 23, NOW(), NOW()),
-('ACA-01', 2, 150.00, 'DOUBLE', 'OUT_OF_SERVICE', 24, NOW(), NOW()),
-('TIJ-01', 2, 100.00, 'DOUBLE', 'AVAILABLE', 25, NOW(), NOW()),
-('CRI-01', 2, 140.00, 'MATRIMONIAL', 'AVAILABLE', 26, NOW(), NOW()),
-('PUE-01', 1, 90.00, 'SINGLE', 'AVAILABLE', 27, NOW(), NOW()),
-('DIA-01', 2, 800.00, 'PRESIDENTIAL', 'AVAILABLE', 28, NOW(), NOW());
-
+-- ===================================================================
+-- 3. POBLAR HABITACIONES (50 Habitaciones distribuidas en los hoteles)
+-- ===================================================================
+INSERT IGNORE INTO rooms (id, hotel_id, room_number, room_type, capacity, price_per_night, room_status, created_at, updated_at) VALUES
+-- Hotel 1 (Oasis Grand Resort)
+(1, 1, '101', 'SINGLE', 1, 100.00, 'AVAILABLE', NOW(), NOW()),
+(2, 1, '102', 'DOUBLE', 2, 150.00, 'AVAILABLE', NOW(), NOW()),
+(3, 1, '103', 'SUITE', 4, 300.00, 'AVAILABLE', NOW(), NOW()),
+(4, 1, '104', 'MATRIMONIAL', 2, 160.00, 'AVAILABLE', NOW(), NOW()),
+(5, 1, '105', 'PRESIDENTIAL', 6, 800.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 2 (Oasis Business Center)
+(6, 2, '201', 'SINGLE', 1, 90.00, 'AVAILABLE', NOW(), NOW()),
+(7, 2, '202', 'DOUBLE', 2, 140.00, 'AVAILABLE', NOW(), NOW()),
+(8, 2, '203', 'SUITE', 4, 280.00, 'AVAILABLE', NOW(), NOW()),
+(9, 2, '204', 'MATRIMONIAL', 2, 150.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 3 (Oasis Mountain Lodge)
+(10, 3, '301', 'DOUBLE', 2, 120.00, 'AVAILABLE', NOW(), NOW()),
+(11, 3, '302', 'DOUBLE', 2, 120.00, 'AVAILABLE', NOW(), NOW()),
+(12, 3, '303', 'SUITE', 4, 250.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 4 (Oasis Pacific View)
+(13, 4, '401', 'SINGLE', 1, 110.00, 'AVAILABLE', NOW(), NOW()),
+(14, 4, '402', 'DOUBLE', 2, 170.00, 'AVAILABLE', NOW(), NOW()),
+(15, 4, '403', 'MATRIMONIAL', 2, 180.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 5 (Oasis Colonial)
+(16, 5, '501', 'DOUBLE', 2, 200.00, 'AVAILABLE', NOW(), NOW()),
+(17, 5, '502', 'SUITE', 4, 400.00, 'AVAILABLE', NOW(), NOW()),
+(18, 5, '503', 'PRESIDENTIAL', 6, 900.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 6 (Oasis Boutique Tulum)
+(19, 6, '601', 'SINGLE', 1, 130.00, 'AVAILABLE', NOW(), NOW()),
+(20, 6, '602', 'DOUBLE', 2, 190.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 7 (Oasis Aeropuerto)
+(21, 7, '701', 'DOUBLE', 2, 100.00, 'AVAILABLE', NOW(), NOW()),
+(22, 7, '702', 'MATRIMONIAL', 2, 110.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 8 (Oasis Centro Histórico)
+(23, 8, '801', 'SINGLE', 1, 80.00, 'AVAILABLE', NOW(), NOW()),
+(24, 8, '802', 'DOUBLE', 2, 130.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 9 (Oasis Eco Resort)
+(25, 9, '901', 'SUITE', 4, 220.00, 'AVAILABLE', NOW(), NOW()),
+(26, 9, '902', 'SUITE', 4, 220.00, 'AVAILABLE', NOW(), NOW()),
+-- Hotel 10 (Oasis Ejecutivo)
+(27, 10, '1001', 'DOUBLE', 2, 160.00, 'AVAILABLE', NOW(), NOW()),
+(28, 10, '1002', 'PRESIDENTIAL', 6, 750.00, 'AVAILABLE', NOW(), NOW()),
+-- Hoteles 11 a 30 (1 Habitación cada uno para dar cobertura masiva)
+(29, 11, '1101', 'SINGLE', 1, 70.00, 'AVAILABLE', NOW(), NOW()),
+(30, 11, '1102', 'DOUBLE', 2, 110.00, 'AVAILABLE', NOW(), NOW()),
+(31, 12, '1201', 'MATRIMONIAL', 2, 210.00, 'AVAILABLE', NOW(), NOW()),
+(32, 12, '1202', 'SUITE', 4, 320.00, 'AVAILABLE', NOW(), NOW()),
+(33, 13, '1301', 'DOUBLE', 2, 140.00, 'AVAILABLE', NOW(), NOW()),
+(34, 14, '1401', 'SINGLE', 1, 85.00, 'AVAILABLE', NOW(), NOW()),
+(35, 15, '1501', 'DOUBLE', 2, 95.00, 'AVAILABLE', NOW(), NOW()),
+(36, 16, '1601', 'SUITE', 4, 260.00, 'AVAILABLE', NOW(), NOW()),
+(37, 17, '1701', 'MATRIMONIAL', 2, 145.00, 'AVAILABLE', NOW(), NOW()),
+(38, 18, '1801', 'PRESIDENTIAL', 6, 850.00, 'AVAILABLE', NOW(), NOW()),
+(39, 19, '1901', 'DOUBLE', 2, 125.00, 'AVAILABLE', NOW(), NOW()),
+(40, 20, '2001', 'SUITE', 4, 310.00, 'AVAILABLE', NOW(), NOW()),
+(41, 21, '2101', 'SINGLE', 1, 75.00, 'AVAILABLE', NOW(), NOW()),
+(42, 22, '2201', 'DOUBLE', 2, 105.00, 'AVAILABLE', NOW(), NOW()),
+(43, 23, '2301', 'MATRIMONIAL', 2, 115.00, 'AVAILABLE', NOW(), NOW()),
+(44, 24, '2401', 'SUITE', 4, 240.00, 'AVAILABLE', NOW(), NOW()),
+(45, 25, '2501', 'DOUBLE', 2, 135.00, 'AVAILABLE', NOW(), NOW()),
+(46, 26, '2601', 'SINGLE', 1, 95.00, 'AVAILABLE', NOW(), NOW()),
+(47, 27, '2701', 'DOUBLE', 2, 110.00, 'AVAILABLE', NOW(), NOW()),
+(48, 28, '2801', 'PRESIDENTIAL', 6, 950.00, 'AVAILABLE', NOW(), NOW()),
+(49, 29, '2901', 'SUITE', 4, 290.00, 'AVAILABLE', NOW(), NOW()),
+(50, 30, '3001', 'MATRIMONIAL', 2, 160.00, 'AVAILABLE', NOW(), NOW());
