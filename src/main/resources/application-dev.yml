@@ -50,5 +50,4 @@ security:
 # ===================================================================
 app:
   cors:
-    allowed-origins:
-      - "*" # 🚀 FIXED PLACEHOLDER: Dynamically resolves the @Value injection for Spring Security 7
+    allowed-origins: "*" # 🚀 FIXED PLACEHOLDER: Dynamically resolves the @Value injection for Spring Security 7

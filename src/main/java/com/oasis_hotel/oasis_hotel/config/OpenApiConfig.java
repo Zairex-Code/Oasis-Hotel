@@ -31,5 +31,5 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         in= SecuritySchemeIn.HEADER
     )
 public class OpenApiConfig {
-    // Class remains empty; configuration is handled entirely by the annotations above.
+
 }
