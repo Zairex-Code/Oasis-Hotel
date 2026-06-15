@@ -28,7 +28,7 @@ spring:
 
     jpa:
         open-in-view: false # ANTI-PATTERN SHIELD: Immediately releases DB connection to pool after service execution, preventing thread/pool starvation under high concurrent load
-  
+
     hibernate:
         naming:
             physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # Standardizes camelCase entities to database snake_case tables/columns mapping explicitly

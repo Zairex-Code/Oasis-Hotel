@@ -167,11 +167,12 @@ public class HotelServiceImpl implements HotelService{
 
 
 
+    // ... (Tus imports) ...
+
     @Override
     public Page<HotelResponseDTO> searchAvailableHotels(String city, Integer guests, LocalDate checkInDate, LocalDate checkOutDate, Pageable pageable) {
         
         // 1. DEFENSIVE TEMPORAL VALIDATIONS
-        // Prevents frontend logical bypasses (e.g., checkout before check-in or booking in the past)
         if (checkInDate != null && checkOutDate != null && !checkInDate.isBefore(checkOutDate)) {
             throw new IllegalArgumentException("La fecha de entrada debe ser estrictamente anterior a la fecha de salida.");
         }
@@ -179,28 +180,27 @@ public class HotelServiceImpl implements HotelService{
             throw new IllegalArgumentException("La fecha de reserva no puede estar en el pasado.");
         }
 
-        // 2. SMART FALLBACKS FOR OPTIONAL QUERY PARAMETERS
-        // Sanitizes inputs and assigns coherent defaults if Next.js submits empty search fields
+        // 2. SMART FALLBACKS
         String searchCity = (city != null && !city.trim().isEmpty()) ? city.trim() : null;
         int targetGuests = (guests != null && guests > 0) ? guests : 1;
-        LocalDate targetCheckIn = (checkInDate != null) ? checkInDate: LocalDate.now();
-        LocalDate targetCheckOut = (checkOutDate != null) ? checkOutDate: LocalDate.now();
+        LocalDate targetCheckIn = (checkInDate != null) ? checkInDate : LocalDate.now();
+        LocalDate targetCheckOut = (checkOutDate != null) ? checkOutDate : LocalDate.now().plusDays(1);
 
-        // 3. EXECUTE ADVANCE AVAILABILITY MATRIX ALGORITHM
-        //We pass RoomStatus.AVAILABLE and ReservationStatus.CANCELLED cleanly as Java parameters
+        // 3. EXECUTE ADVANCED AVAILABILITY MATRIX ALGORITHM (Simplified call)
         Page<Hotel> hotels = hotelRepository.findAvailableHotels(
-                                                                searchCity, 
-                                                                targetGuests, 
-                                                                targetCheckIn, 
-                                                                targetCheckOut, 
-                                                                RoomStatus.AVAILABLE, 
-                                                                ReservationStatus.CANCELLED, 
-                                                                pageable);
-        
-        if(hotels.isEmpty()){
-            throw new ResourceNotFoundException("Available Hotels not found ");
+                searchCity,
+                targetGuests,
+                targetCheckIn,
+                targetCheckOut,
+                RoomStatus.AVAILABLE,
+                ReservationStatus.CANCELLED,
+                pageable
+        );
+
+        if (hotels.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron hoteles disponibles que cumplan con los criterios de búsqueda.");
         }
-        
+
         return hotels.map(hotelMapper::toResponse);
     }
 
