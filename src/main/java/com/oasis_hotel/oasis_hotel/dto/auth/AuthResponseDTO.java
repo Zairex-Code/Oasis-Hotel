@@ -1,8 +1,10 @@
 package com.oasis_hotel.oasis_hotel.dto.auth;
 
+import com.oasis_hotel.oasis_hotel.dto.user.UserResponseDTO;
+
 public record AuthResponseDTO(
-    String token,
-    String message
+    String jwt,
+    UserResponseDTO user
 ) {
     
 }
