@@ -58,6 +58,7 @@ public class SecurityConfig {
             
             // Route Authorization Rules
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Public Authentication & Registration endpoints
                 .requestMatchers("/v1/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/v1/api/users").permitAll()
