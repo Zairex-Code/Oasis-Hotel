@@ -153,6 +153,13 @@ public class ReservationServiceImpl implements ReservationService{
         }
     }
 
+    @Override
+    public Page<ReservationResponseDTO> getAllReservations(Pageable pageable) {
+        Page<Reservation> reservation = reservationRepository.findAll(pageable);
+        return reservation.map(reservationMapper::toResponse);
+        
+    }
+
 
     
 

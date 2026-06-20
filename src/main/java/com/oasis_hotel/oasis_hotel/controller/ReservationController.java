@@ -7,24 +7,22 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oasis_hotel.oasis_hotel.dto.reservation.ReservationRequestDTO;
 import com.oasis_hotel.oasis_hotel.dto.reservation.ReservationResponseDTO;
+import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 import com.oasis_hotel.oasis_hotel.service.ReservationService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 
 
 
@@ -37,6 +35,14 @@ import com.oasis_hotel.oasis_hotel.entity.enums.RoomType;
 @RequiredArgsConstructor
 public class ReservationController {
     private final ReservationService reservationService;
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL_MANAGER')")
+    @GetMapping 
+    public ResponseEntity<Page<ReservationResponseDTO>> getAllReservations(@PageableDefault(size=10, page=0, sort="createdAt", direction=Direction.DESC) Pageable pageable) {
+        
+        Page<ReservationResponseDTO> response = reservationService.getAllReservations(pageable);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<ReservationResponseDTO> createReservation(@Valid @RequestBody ReservationRequestDTO request) {

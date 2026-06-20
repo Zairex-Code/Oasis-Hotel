@@ -37,7 +37,7 @@ public class HotelController {
 
 
     @GetMapping
-    public ResponseEntity<Page<HotelResponseDTO>> getAllHotel( @PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getAllHotel( @PageableDefault(size = 12, page = 0, sort = "id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getAllHotels(pageable);
         return ResponseEntity.ok(response);
         
@@ -50,28 +50,28 @@ public class HotelController {
     }
 
     @GetMapping("/search/name")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelsByName(@RequestParam String name,@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelsByName(@RequestParam String name,@PageableDefault(size = 12, page = 0, sort = "id") Pageable pageable) {
         
         Page<HotelResponseDTO> response = hotelService.getHotelByName(name, pageable);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/search/city")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelByCity(@RequestParam String city, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByCity(@RequestParam String city, @PageableDefault(size=12, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelByCity(city, pageable);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("search/address")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelByAddress(@RequestParam String address, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByAddress(@RequestParam String address, @PageableDefault(size=12, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelByAddress(address, pageable);
 
         return ResponseEntity.ok(response);
     }
     
     @GetMapping("search/goodRatedHotels")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelGooRated(@PageableDefault(size=10,page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelGooRated(@PageableDefault(size=12,page=0, sort="id") Pageable pageable) {
         
         Page<HotelResponseDTO> response = hotelService.getHotelsGoodRated(pageable);
 
@@ -80,14 +80,14 @@ public class HotelController {
     }
     
     @GetMapping("search/stars")
-    public ResponseEntity<Page<HotelResponseDTO>> getHotelByStars(@RequestParam Integer stars, @PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getHotelByStars(@RequestParam Integer stars, @PageableDefault(size=12, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelByStars(stars, pageable);
 
         return ResponseEntity.ok(response);
     }
     
     @GetMapping("search/recently-released")
-    public ResponseEntity<Page<HotelResponseDTO>> getRecentlyReleasedHotel(@PageableDefault(size=10, page=0, sort="id") Pageable pageable) {
+    public ResponseEntity<Page<HotelResponseDTO>> getRecentlyReleasedHotel(@PageableDefault(size=12, page=0, sort="id") Pageable pageable) {
         Page<HotelResponseDTO> response = hotelService.getHotelRecentlyReleased(pageable);
         return ResponseEntity.ok(response);
     }
@@ -98,7 +98,7 @@ public class HotelController {
             @RequestParam(required = false) Integer guests,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
-            @PageableDefault(size = 10, page = 0, sort = "stars", direction = Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 12, page = 0, sort = "stars", direction = Direction.DESC) Pageable pageable) {
         
         // Technical note: You will need to declare 'searchAvailableHotels' inside HotelService 
         // and implement it inside HotelServiceImpl to invoke the newly created repository query.
@@ -127,10 +127,9 @@ public class HotelController {
 
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/status/{id}")
-    public ResponseEntity<HotelResponseDTO> setHotelStatus(@PathVariable Long id,@Valid @RequestBody  HotelSetStatusRequestDTO request) {
+    @PutMapping("/{id}/status")
+    public ResponseEntity<HotelResponseDTO> setHotelStatus(@PathVariable Long id, @Valid @RequestBody HotelSetStatusRequestDTO request) {
         HotelResponseDTO response = hotelService.setHotelStatus(id, request);
-        
         return ResponseEntity.ok(response);
     }
     

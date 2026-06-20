@@ -44,7 +44,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping
-    public ResponseEntity<Page<RoomResponseDTO>> getAllRooms(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<RoomResponseDTO>> getAllRooms(@PageableDefault(page = 0, size = 12, sort = "id") Pageable pageable) {
         Page<RoomResponseDTO> response = roomService.getAllRooms(pageable);
         return ResponseEntity.ok(response);
     }
