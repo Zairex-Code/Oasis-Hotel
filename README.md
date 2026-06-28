@@ -78,6 +78,20 @@ Once the application is running, you can interact with the API endpoints through
 
 *(Ensure you have registered a user and authenticated via the `/auth` endpoints to receive a JWT for secured routes).*
 
+<img width="1404" height="883" alt="image" src="https://github.com/user-attachments/assets/2fa13709-b1b1-44b7-8226-5e48941f6410" />
+
+<img width="1304" height="546" alt="image" src="https://github.com/user-attachments/assets/28285f4b-7e9b-4220-839c-75e490b23d88" />
+
+<img width="1304" height="375" alt="image" src="https://github.com/user-attachments/assets/cbc0759f-e692-473a-bb9d-b7ac6c78c1e7" />
+
+<img width="1322" height="645" alt="image" src="https://github.com/user-attachments/assets/7432c8a6-c716-4fb5-bad6-5d5560a0b590" />
+
+<img width="1328" height="108" alt="image" src="https://github.com/user-attachments/assets/545641ec-05a0-44b7-9389-724445ee0a6a" />
+
+
+
+
+
 ## 🗄️ Database Schema Overview
 
 *   **User:** Credentials and identity data (`1:N` with Reservation and Review).
