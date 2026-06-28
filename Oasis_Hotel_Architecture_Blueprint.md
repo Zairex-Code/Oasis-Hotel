@@ -62,7 +62,7 @@ Reservations and Rooms possess a life cycle controlled by strict statuses.
 
 ---
 
-## 📂 5. Package Structure (N-Tier Architecture)
+## 📂 5. Package  Structure (N-Tier Architecture)
 
 ```text
 com.oasis_hotel.oasis_hotel
